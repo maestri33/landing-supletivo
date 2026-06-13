@@ -1,10 +1,8 @@
 import { writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
-// Páginas fora do sitemap.
-// termos/privacidade: reincluir quando o CNPJ real for publicado
-// (indexar página legal com CNPJ placeholder queima credibilidade e Ads).
-const EXCLUDE = new Set(['404/', 'termos/', 'privacidade/']);
+// Páginas fora do sitemap (só a 404 — legais entram, já com CNPJ real).
+const EXCLUDE = new Set(['404/']);
 
 /**
  * Gera sitemap.xml e robots.txt no build, a partir do `site` do astro.config.
