@@ -31,11 +31,11 @@ export const faq: FaqItem[] = [
   },
   {
     q: 'Como são as provas?',
-    a: 'A prova final é presencial, em local indicado e com data flexível — você escolhe o melhor dia. É nesse encontro que você assina a documentação que é enviada à Secretaria de Educação do estado: esse passo oficial é o que dá validade ao seu certificado. Todo o estudo até lá é online, no seu ritmo.',
+    a: 'A prova final é presencial: você escolhe um dos nossos polos e o dia que quiser. É nesse encontro que você assina a documentação que é enviada à Secretaria de Educação do estado — esse passo oficial é o que dá validade ao seu certificado. Todo o estudo até lá é online, no seu ritmo.',
   },
   {
     q: 'Preciso de computador para estudar?',
-    a: 'Para estudar, não: a matrícula e todo o conteúdo funcionam pelo celular (também dá para usar computador ou tablet). Só a prova final é presencial, em local indicado.',
+    a: 'Para estudar, não: a matrícula e todo o conteúdo funcionam pelo celular (também dá para usar computador ou tablet). Só a prova final é presencial, em um dos nossos polos.',
   },
   {
     q: 'Posso fazer o Ensino Fundamental e o Médio no mesmo lugar?',
