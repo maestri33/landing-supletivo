@@ -3,6 +3,8 @@
  * Regras de copy: sem nome de instituição parceira, sem números de prova social.
  * Ordem: maiores objeções primeiro (medo de golpe e dinheiro).
  */
+import { cardLine, pixBRL } from './price';
+
 export interface FaqItem {
   q: string;
   a: string;
@@ -15,7 +17,7 @@ export const faq: FaqItem[] = [
   },
   {
     q: 'Quais são as formas de pagamento?',
-    a: 'Você pode pagar em 12x de R$ 99 no cartão de crédito ou R$ 999 à vista no Pix. A escolha é feita na matrícula, dentro do app. O valor é promocional e pode mudar sem aviso.',
+    a: `Você pode pagar em ${cardLine} no cartão de crédito ou ${pixBRL} à vista no Pix. A escolha é feita na matrícula, dentro do app. O valor é promocional e pode mudar sem aviso.`,
   },
   {
     q: 'O certificado serve para faculdade, concurso e CNH?',

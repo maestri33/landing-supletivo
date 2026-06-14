@@ -4,40 +4,41 @@
  * entrar em cena + spotlight seguindo o mouse (desktop) + shine periódico.
  */
 import CtaButton from './CtaButton.astro';
+import { PRICE, perMonthBRL, pixBRL, fullBRL, savingsBRL, underPerMonthBRL } from '../data/price';
 
-const PRICE = 'R$ 99';
-const priceChars = PRICE.split('');
+// dígitos animados a partir da parcela vinda do backend ("R$ 99")
+const priceChars = perMonthBRL.split('');
 ---
 
 <section id="preco" class="pricing section on-dark grain" aria-labelledby="pricing-title" data-section="preco">
   <span class="sec-num" aria-hidden="true" data-n="04"></span>
   <div class="container pricing-inner">
     <p class="kicker pricing-kicker" data-reveal>O investimento</p>
-    <h2 id="pricing-title" data-reveal>Menos de R$ 100 por mês.</h2>
+    <h2 id="pricing-title" data-reveal>Menos de {underPerMonthBRL} por mês.</h2>
 
     <div class="price-card" data-reveal data-price style="--d: 1">
       <p class="price-old">
-        de <s>R$&nbsp;1.615<svg class="scissors" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="5" cy="7.2" r="2.1" stroke="var(--yellow)" stroke-width="1.7"></circle><circle cx="5" cy="16.8" r="2.1" stroke="var(--yellow)" stroke-width="1.7"></circle><path class="sc-a" d="M6.8 8.4 20 14.6" stroke="var(--yellow)" stroke-width="1.7" stroke-linecap="round"></path><path class="sc-b" d="M6.8 15.6 20 9.4" stroke="var(--yellow)" stroke-width="1.7" stroke-linecap="round"></path></svg></s>
+        de <s>{fullBRL}<svg class="scissors" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="5" cy="7.2" r="2.1" stroke="var(--yellow)" stroke-width="1.7"></circle><circle cx="5" cy="16.8" r="2.1" stroke="var(--yellow)" stroke-width="1.7"></circle><path class="sc-a" d="M6.8 8.4 20 14.6" stroke="var(--yellow)" stroke-width="1.7" stroke-linecap="round"></path><path class="sc-b" d="M6.8 15.6 20 9.4" stroke="var(--yellow)" stroke-width="1.7" stroke-linecap="round"></path></svg></s>
       </p>
 
       <p class="price-main">
         <span class="price-x">por</span>
         <strong class="price-value">
-          <span class="sr-only">{PRICE} por mês</span>
+          <span class="sr-only">{perMonthBRL} por mês</span>
           <span class="digits" aria-hidden="true">
             {priceChars.map((ch, i) => (
-              <span class="digit" style={`--g: ${i}`}>{ch === ' ' ? ' ' : ch}</span>
+              <span class="digit" style={`--g: ${i}`}>{ch}</span>
             ))}
           </span>
         </strong>
         <span class="price-per" aria-hidden="true">/mês</span>
       </p>
 
-      <p class="price-mode-line">em 12x no cartão de crédito</p>
+      <p class="price-mode-line">em {PRICE.installments}x no cartão de crédito</p>
 
       <p class="price-alt">
-        ou <strong>R$&nbsp;999</strong> à vista no Pix
-        <span class="price-save">— você economiza R$&nbsp;616</span>
+        ou <strong>{pixBRL}</strong> à vista no Pix
+        <span class="price-save">— você economiza {savingsBRL}</span>
       </p>
 
       <p class="price-warn">

@@ -4,12 +4,13 @@
  * sem JS fica sempre visível (progressive enhancement).
  */
 import { APP_URL, CTA_LABEL } from '../config';
+import { cardLineShort } from '../data/price';
 ---
 
 <div class="sticky-cta on-dark">
   <div class="sticky-inner">
     <p class="sticky-price">
-      <strong>12x R$ 99</strong>
+      <strong>{cardLineShort}</strong>
       <span>garantia de 7 dias</span>
     </p>
     <a

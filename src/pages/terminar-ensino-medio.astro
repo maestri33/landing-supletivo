@@ -4,10 +4,11 @@
  */
 import ContentPage from '../layouts/ContentPage.astro';
 import CtaButton from '../components/CtaButton.astro';
+import { cardLine, pixBRL, fullBRL } from '../data/price';
 
 const title = 'Como Terminar o Ensino Médio Sendo Adulto | Supletivo Brasil';
 const description =
-  'Parou de estudar? Veja como terminar o ensino médio sendo adulto: EJA online, certificado válido no Brasil inteiro e matrícula pelo celular em 12x de R$ 99.';
+  `Parou de estudar? Veja como terminar o ensino médio sendo adulto: EJA online, certificado válido no Brasil inteiro e matrícula pelo celular em ${cardLine}.`;
 ---
 
 <ContentPage {title} {description} ogImage="/og-terminar-ensino-medio.png" kicker="Guia rápido" h1="Como terminar o ensino médio sendo adulto (sem voltar pra escola)">
@@ -44,9 +45,9 @@ const description =
 
   <h2>Quanto custa terminar o ensino médio online</h2>
   <p>
-    No Supletivo Brasil, o valor promocional é de <strong>12x de R$ 99 no
-    cartão</strong> ou <strong>R$ 999 à vista no Pix</strong> — o valor cheio
-    é R$ 1.615. Promoção por tempo limitado.
+    No Supletivo Brasil, o valor promocional é de <strong>{cardLine} no
+    cartão</strong> ou <strong>{pixBRL} à vista no Pix</strong> — o valor cheio
+    é {fullBRL}. Promoção por tempo limitado.
   </p>
 
   <h2>"Faz muito tempo que parei. Consigo acompanhar?"</h2>

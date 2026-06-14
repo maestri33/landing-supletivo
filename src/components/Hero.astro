@@ -8,6 +8,7 @@
 import CtaButton from './CtaButton.astro';
 import DiplomaFlag from './DiplomaFlag.astro';
 import Marquee from './Marquee.astro';
+import { cardLine, pixBRL } from '../data/price';
 
 const LINE_1 = 'Você parou.';
 const LINE_2_A = 'Mas não';
@@ -97,7 +98,7 @@ const chips = ['100% online', 'No seu ritmo', 'Pelo celular'];
     <div class="hero-cta anim-up" style="--i: 9">
       <CtaButton position="hero" class="btn-xl" />
       <p class="microcopy">
-        <strong>12x de R$ 99</strong> ou R$ 999 no Pix · matrícula 100% online
+        <strong>{cardLine}</strong> ou {pixBRL} no Pix · matrícula 100% online
       </p>
     </div>
   </div>
@@ -115,7 +116,7 @@ const chips = ['100% online', 'No seu ritmo', 'Pelo celular'];
 
   <div class="hero-marquee">
     <Marquee
-      items={['12x de R$ 99', 'Supletivo online', 'Certificado válido em todo o Brasil', 'EJA Fundamental e Médio', 'Garantia de 7 dias', 'Estude pelo celular']}
+      items={[cardLine, 'Supletivo online', 'Certificado válido em todo o Brasil', 'EJA Fundamental e Médio', 'Garantia de 7 dias', 'Estude pelo celular']}
       variant="yellow"
       speed={30}
     />
