@@ -27,19 +27,19 @@ export const faq: FaqItem[] = [
   },
   {
     q: 'Em quanto tempo consigo terminar?',
-    a: 'Depende do seu ritmo. O curso é 100% online e você estuda nos horários que tiver. Quanto mais constância nos estudos e nas avaliações, mais cedo você chega ao certificado.',
+    a: 'Depende do seu ritmo. Você estuda 100% online, nos horários que tiver, e marca a prova final presencial quando se sentir preparado. Quanto mais constância nos estudos, mais cedo você chega ao certificado.',
   },
   {
     q: 'Como são as provas?',
-    a: 'As avaliações são feitas de forma online, dentro da própria plataforma, pelo celular ou computador — sem precisar se deslocar.',
+    a: 'A prova final é presencial, em local indicado e com data flexível — você escolhe o melhor dia. É nesse encontro que você assina a documentação que é enviada à Secretaria de Educação do estado: esse passo oficial é o que dá validade ao seu certificado. Todo o estudo até lá é online, no seu ritmo.',
   },
   {
     q: 'Preciso de computador para estudar?',
-    a: 'Não. Tudo — da matrícula às avaliações — funciona pelo celular. Se preferir, também dá para usar computador ou tablet.',
+    a: 'Para estudar, não: a matrícula e todo o conteúdo funcionam pelo celular (também dá para usar computador ou tablet). Só a prova final é presencial, em local indicado.',
   },
   {
     q: 'Posso fazer o Ensino Fundamental e o Médio no mesmo lugar?',
-    a: 'Sim. O Supletivo Brasil atende às duas etapas da EJA: você conclui o Ensino Fundamental e depois segue direto para o Ensino Médio, tudo 100% online.',
+    a: 'Sim. O Supletivo Brasil atende às duas etapas da EJA: você conclui o Ensino Fundamental e depois segue direto para o Ensino Médio, estudando 100% online em ambas.',
   },
   {
     q: 'Como faço para me matricular agora?',
