@@ -3,6 +3,7 @@
  * Seção 8b — Rodapé: logo, CNPJ (placeholder), links legais, aviso LGPD.
  */
 import Logo from './Logo.astro';
+import { COMPANY_URL, CAREERS_URL } from '../config';
 
 const year = new Date().getFullYear();
 ---
@@ -39,6 +40,15 @@ const year = new Date().getFullYear();
           <p class="footer-nav-title">Legal</p>
           <a href="/termos/">Termos de Uso</a>
           <a href="/privacidade/">Política de Privacidade</a>
+        </div>
+        <div class="footer-nav-group">
+          <p class="footer-nav-title">Empresa</p>
+          <a href={COMPANY_URL} target="_blank" rel="noopener noreferrer">
+            Sobre a V7M<span class="sr-only"> (abre em nova aba)</span>
+          </a>
+          <a href={CAREERS_URL} target="_blank" rel="noopener noreferrer">
+            Trabalhe conosco<span class="sr-only"> (abre em nova aba)</span>
+          </a>
         </div>
       </nav>
       <a class="to-top" href="#hero" aria-label="Voltar ao topo">
@@ -159,7 +169,8 @@ const year = new Date().getFullYear();
 
   .footer-nav {
     display: flex;
-    gap: clamp(2rem, 6vw, 4rem);
+    flex-wrap: wrap;
+    gap: 1.4rem clamp(2rem, 6vw, 4rem);
   }
 
   .footer-nav-group {

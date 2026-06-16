@@ -13,8 +13,10 @@ interface Props {
   tilt?: number;
 }
 const { items, variant = 'yellow', speed = 28, tilt = 0 } = Astro.props;
-// repete itens para o track sempre exceder a largura da tela
-const copy = [...items, ...items, ...items];
+// loop seamless: 2 <ul> idênticas + translateX(-50%). Cada <ul> precisa
+// ser mais larga que a viewport — com listas de mensagens distintas, 2×
+// já basta (antes eram 3×, nós a mais sem ganho visual).
+const copy = [...items, ...items];
 ---
 
 <div
