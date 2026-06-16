@@ -64,12 +64,12 @@ import CtaButton from './CtaButton.astro';
 
     <!-- régua de idades: sempre visível (com ou sem JS) -->
     <div class="elig-ages" data-reveal style="--d: 3">
-      <div class="age">
+      <div class="age" data-age="15">
         <b>15</b>
         <span>anos completos<br />Ensino Fundamental</span>
       </div>
       <span class="age-sep" aria-hidden="true"></span>
-      <div class="age">
+      <div class="age" data-age="18">
         <b>18</b>
         <span>anos completos<br />Ensino Médio</span>
       </div>
@@ -99,9 +99,18 @@ import CtaButton from './CtaButton.astro';
     },
   };
 
+  // liga a escolha de idade à régua da lei: a faixa clicada acende o(s)
+  // número(s) que ela destrava (15 = Fundamental, 18 = Médio)
+  const UNLOCKS: Record<string, string[]> = {
+    lt15: ['15'],
+    '15a17': ['15'],
+    '18mais': ['15', '18'],
+  };
+
   const buttons = document.querySelectorAll<HTMLButtonElement>('[data-elig]');
   const result = document.querySelector<HTMLElement>('[data-elig-result]');
   const ctaWrap = document.querySelector<HTMLElement>('[data-elig-cta]');
+  const ages = document.querySelectorAll<HTMLElement>('[data-age]');
 
   buttons.forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -115,6 +124,10 @@ import CtaButton from './CtaButton.astro';
       result.classList.toggle('ok', answer.cta);
       btn.closest('.elig-widget')?.classList.toggle('gate-open', answer.cta);
       ctaWrap.hidden = !answer.cta;
+
+      const on = UNLOCKS[key] ?? [];
+      ages.forEach((a) => a.classList.toggle('age--on', on.includes(a.dataset.age ?? '')));
+
       track('eligibility_check', { faixa: key });
     });
   });
@@ -346,6 +359,21 @@ import CtaButton from './CtaButton.astro';
     display: flex;
     align-items: center;
     gap: 0.85rem;
+    padding: 0.45rem 0.7rem;
+    border-radius: 14px;
+    transition:
+      background-color 0.3s var(--ease-out),
+      box-shadow 0.3s var(--ease-out);
+  }
+
+  /* acende quando a faixa de idade escolhida destrava esta etapa */
+  .age--on {
+    background: rgb(255 196 0 / 0.1);
+    box-shadow: inset 0 0 0 1.5px rgb(255 196 0 / 0.55);
+  }
+
+  .age--on b {
+    text-shadow: 0 0 18px rgb(255 196 0 / 0.45);
   }
 
   .age b {
