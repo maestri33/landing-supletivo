@@ -230,12 +230,14 @@ const chips = ['100% online', 'No seu ritmo', 'Pelo celular'];
   }
 
   @media (min-width: 960px) {
+    /* peça maior, ancorada à direita com leve sangria: ocupa de fato a
+       metade direita do hero em vez de flutuar pequena no canto */
     .hero-diploma {
       position: absolute;
-      right: clamp(-1rem, 1.5vw, 3.5rem);
+      right: clamp(-3rem, -1.5vw, 0rem);
       top: 50%;
-      translate: 0 -52%;
-      width: min(40vw, 560px);
+      translate: 0 -50%;
+      width: min(46vw, 620px);
       margin: 0;
       z-index: 1;
     }
@@ -247,7 +249,7 @@ const chips = ['100% online', 'No seu ritmo', 'Pelo celular'];
 
     /* abre espaço pro texto não disputar com a peça */
     .hero-inner {
-      padding-right: min(38vw, 500px);
+      padding-right: min(42vw, 540px);
     }
 
     /* coluna de texto encolheu: o display gigante quebraria palavra a
