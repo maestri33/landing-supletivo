@@ -15,11 +15,11 @@ import StickyCta from '../components/StickyCta.astro';
 import Footer from '../components/Footer.astro';
 import { faq } from '../data/faq';
 import { BRAND } from '../config';
-import { PRICE, cardLine, fullBRL } from '../data/price';
+import { PRICE, cardLine, pixBRL } from '../data/price';
 
 const title = 'Supletivo Online — Ensino Fundamental e Médio EJA | Supletivo Brasil';
 const description =
-  `Supletivo online com certificado válido em todo o Brasil. Conclua o Ensino Fundamental ou Médio pelo celular: de ${fullBRL} por ${cardLine}. Matrícula 100% online.`;
+  `Supletivo online com certificado válido em todo o Brasil. Conclua o Ensino Fundamental ou Médio pelo celular em ${cardLine} no cartão (ou ${pixBRL} à vista no Pix). Matrícula 100% online.`;
 
 const site = Astro.site!;
 const siteUrl = site.href;
@@ -49,7 +49,6 @@ const schema = {
         lowPrice: String(PRICE.pixTotal),
         highPrice: String(PRICE.cardTotal),
         offerCount: '2',
-        availability: 'https://schema.org/InStock',
         url: siteUrl,
       },
     },
