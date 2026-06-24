@@ -3,158 +3,178 @@ name: run-landing-supletivo
 description: Build, run, and drive the Supletivo Brasil landing page (Astro static). Use when asked to start the landing, run its tests, build it, take a screenshot of any section, exercise the eligibility widget, check ref attribution, or verify the dataLayer events.
 ---
 
-Astro 6 static landing. The "app" is `dist/` after `npm run build`; the
-agent drives it in headless Chromium via `.claude/skills/run-landing-supletivo/driver.mjs`.
-No GUI, no dev server, no test framework needed — `npm run preview` serves
-the build on `:4321` (or any port) and the driver clicks through the page.
+Astro 6 static landing at `<unit>/`. Drive it with the headless-Chromium
+script at `.claude/skills/run-landing-supletivo/driver.mjs` against
+`npm run preview` on a free port. The script walks the full user flow —
+load with a `?ref=…` token, click the 18+ eligibility widget, open the
+FAQ, scroll the page, and snap per-section screenshots — and exits
+non-zero on any regression (broken ref attribution, missing
+`page_view` / `scroll_depth` / `section_view` events, "Caminho livre"
+text gone).
 
-Paths below are relative to `<unit>/` (repo root).
+All paths below are relative to `<unit>/` (the repo root).
 
 ## Prerequisites
 
-Tested on Ubuntu with Node 22. The driver needs a Chromium binary; the
-project already pulls Playwright, so its bundled chromium is preferred.
+- Node.js 22+ (project tested on 22; no `.nvmrc`/`engines` pin)
+- One Chromium binary. The driver resolves in this order:
+  1. `~/.cache/ms-playwright/chromium-*/chrome-linux64/chrome` (the
+     Playwright cache that `npx playwright install chromium` produces)
+  2. `~/.cache/ms-playwright/chromium_headless_shell-*/chrome-headless-shell-linux64/chrome-headless-shell`
+  3. `/usr/bin/chromium`, `/usr/bin/chromium-browser`, `/usr/bin/google-chrome`
 
-```bash
-sudo apt-get update
-sudo apt-get install -y chromium           # only if not using Playwright's
-node --version                             # 20+ required (project pins 22)
-```
-
-If `~/.cache/ms-playwright/chromium-*/chrome-linux64/chrome` exists (the
-project's devDeps pull it via `npm install` + `npx playwright install`),
-the driver uses it. Otherwise it falls back to system `/usr/bin/chromium`.
+No `apt-get` is required on a clean container — `npm install` plus
+`npx playwright install chromium` is enough.
 
 ## Setup
 
 ```bash
-npm ci                                      # or `npm install` for first time
-npm run build                               # → dist/
+npm install
 ```
+
+The dev deps already include `@playwright/test` (used by the driver)
+and `@axe-core/playwright` (for the a11y pass).
 
 ## Build
 
 ```bash
-npm run build                               # outputs static dist/
+npm run build         # writes dist/ (Astro static)
 ```
+
+The build also runs the `seo-files` integration, which writes
+`dist/sitemap.xml` and `dist/robots.txt` from the `SITE` env var.
 
 ## Run (agent path)
 
-The driver walks the page, asserts the dataLayer, exercises the eligibility
-widget, the FAQ, and the CTAs, then writes 7 section screenshots and a
-`summary.json` to `.claude/skills/run-landing-supletivo/screenshots/`.
-
 ```bash
-# 1. Serve the built site. Pick a free port — 4321 is the project default
-#    but is often taken in this container by other Astro projects.
-npx astro preview --port 4399 --host 127.0.0.1 &
+# 1. serve dist/ on a free port (default 4321 is taken by other
+#    Astro projects in this container — use any free port)
+nohup npx astro preview --port 4325 --host 127.0.0.1 \
+  > /tmp/preview-4325.log 2>&1 &
+echo $! > /tmp/preview-4325.pid
 
-# 2. Wait for it to answer, then drive.
-timeout 15 bash -c 'until curl -sf http://127.0.0.1:4399/ >/dev/null; do sleep 0.3; done'
-node .claude/skills/run-landing-supletivo/driver.mjs --url http://127.0.0.1:4399/
+# wait for it to actually serve
+timeout 15 bash -c 'until curl -sf http://127.0.0.1:4325/ >/dev/null; do sleep 0.5; done'
+
+# 2. drive the page
+node .claude/skills/run-landing-supletivo/driver.mjs \
+  --url http://127.0.0.1:4325/
+
+# 3. when done
+kill "$(cat /tmp/preview-4325.pid)"
 ```
 
 Output:
 
-```
-01-hero.png                     # full hero with diploma flag
-02-eligibilidade-18mais.png     # eligibility widget after 18+ click
-03-faq.png                      # FAQ section with first details open
-04-footer.png                   # final CTA section
-05-espelho.png                  # espelho (mirror) — SVG animations frozen
-06-confianca.png                # trust section
-07-preco.png                    # pricing card
-summary.json                    # dataLayer events, CTA hrefs, axe result, console errors
-```
+- **Screenshots** → `.claude/skills/run-landing-supletivo/screenshots/01-hero.png`
+  through `07-preco.png`. Each is a per-section `<section id="…">`
+  capture (not a viewport crop), so they don't suffer from the page's
+  `scroll-behavior: smooth` keeping the viewport mid-animation.
+- **JSON summary** → `screenshots/summary.json` — `ctaHrefs` (proves
+  every CTA carries the ref+UTMs), `dataLayer` (every event the
+  page emitted during the run), `eligibilityResult`, `sections`
+  seen, `subpages` HTTP statuses, `consoleErrors`, `axe` violations.
+- **Driver stdout** — same as `summary.json` printed. Exit code is
+  non-zero on any regression.
 
-The driver prints a JSON summary on stdout and exits non-zero on a hard
-failure (preview down, no CTAs, missing `page_view`, missing
-"scroll_depth 25/50/75/100", eligibility result not visible). It also writes
-the same JSON to `screenshots/summary.json` for later inspection. Axe
-violations are recorded in the summary but do **not** fail the run — pass
-`--strict true` to additionally fail on any console error (exit 2).
+Driver flags:
 
-Useful flags:
-
-| flag                | what it does                                             |
-|---------------------|----------------------------------------------------------|
-| `--url <URL>`       | base URL (default `http://localhost:4321/`)              |
-| `--ref <value>`     | override the auto-generated `?ref=…` (default random)    |
-| `--shots-dir <dir>` | where screenshots and `summary.json` land                |
-| `--viewport WxH`    | default `1280x800`                                       |
-| `--strict true`     | treat console errors as fatal (exit 2)                   |
+| flag | default | what |
+|---|---|---|
+| `--url` | `http://localhost:4321/` | page to drive (override when 4321 is taken) |
+| `--ref` | random `agent-XXXX` | ref token appended to every CTA href |
+| `--shots-dir` | skill dir `screenshots/` | where PNGs + summary.json land |
+| `--viewport` | `1280x800` | `WxH` for the headless viewport |
+| `--strict` | `false` | also exit non-zero on console errors |
 
 ## Run (human path)
 
 ```bash
-npm run dev          # astro dev on :4321 with HMR — useless headless
-# …or
-npm run preview      # serve the built dist/ on :4321
+npm run dev           # http://localhost:4321, hot reload
 ```
 
-Both open a browser window when run interactively. Use them only when you
-want to look at the page yourself; the agent path above is what future
-agents will use.
+Open in a real browser. CTAs deep-link to `PUBLIC_APP_URL` (default
+`http://localhost:3000` in dev, `https://app.supletivo.net.br` in
+build). Refs and UTMs are appended client-side; without JS the CTAs
+still work (clean hrefs rendered server-side).
 
 ## Test
 
 ```bash
-npm test                                # unit — attribution/first-touch rules
-npm run test:e2e                        # Playwright — needs `npm run build` first
+npm test              # vitest — attribution rules (first-touch, persistence)
+npm run test:e2e      # playwright — ref/UTM, dataLayer, eligibility, axe
 ```
+
+`npm run test:e2e` requires `npm run build` first and (one-time)
+`npx playwright install chromium`.
 
 ## Gotchas
 
-- **`html { scroll-behavior: smooth }`**. The page has this CSS for in-page
-  nav anchors. Don't try to call `page.screenshot()` after
-  `window.scrollTo()` and expect the scrolled viewport — Playwright
-  occasionally captures the un-scrolled frame. The driver sidesteps this
-  by using `locator('section#…').screenshot()` per section, which is
-  driven off the element's computed bounding box and ignores the
-  composited viewport.
-- **The driver hard-fails on missing `page_view` or `scroll_depth`**. That
-  is intentional — these are the project's acceptance signals for
-  attribution and analytics. If you see "No page_view event in dataLayer",
-  the `src/scripts/main.ts` entry wasn't loaded (likely a build
-  cache problem); rebuild with `rm -rf dist && npm run build`.
-- **Port 4321 is already taken on this machine** by `landing-promotor` and
-  `app-supletivo`. Use `--port 4325` (or any free port) and pass it to
-  the driver via `--url`. The driver's preflight TCP probe prints the
-  exact `npm run preview` line if the port is closed — no need to guess.
-- **Playwright 1.60 wants chromium-1223 but this image has 1228**. The
-  driver resolves the binary directly from
-  `~/.cache/ms-playwright/chromium-1228/chrome-linux64/chrome` and
-  passes it as `executablePath`. If you `npx playwright install`, the
-  driver will keep working (newer 12xx versions sort to the front of the
-  resolver).
-- **No real "app" is running on `https://app.supletivo.net.br`**. The
-  CTAs link there, but the driver asserts on the href, not the network
-  round-trip — that's correct for a static landing, but it does mean the
-  driver can't catch a backend regression.
-- **`window.dataLayer` accumulates across `page.goto`s**. The driver
-  re-navigates with a fresh URL whenever it needs a clean dataLayer (CTA
-  click test, FAQ open test, scroll sweep). Don't combine assertions
-  across navigations.
+- **Port 4321 is contested in this container.** Other Astro previews
+  (`landing-promotor`, `app-supletivo`) grab it on every fresh shell.
+  Use any free port (4325+ in this env) and pass it via `--url`. The
+  driver's preflight TCP probe prints the exact `npx astro preview`
+  line if the port is closed, so the failure mode is loud.
+- **`page.screenshot()` after a scroll can capture the un-scrolled
+  frame.** This page has `html { scroll-behavior: smooth }`. When the
+  compositor hasn't repainted yet, a viewport screenshot lands on the
+  pre-scroll frame even though `window.scrollY` reports the new value
+  (you'll see `scrollY=2109` in debug logs while the PNG shows the
+  hero). The driver works around this by using
+  `page.locator('section#…').screenshot()` for every shot — Playwright
+  computes the element's bounding box and captures that, independent
+  of viewport scroll.
+- **`[data-reveal]` is `opacity: 0` until IntersectionObserver fires.**
+  The driver pre-adds `.in-view` (and `.lit` for the mirror section)
+  to every relevant element after each `page.goto` so the buttons
+  are clickable without depending on scroll-into-view to fire the
+  observer. Without that,
+  `page.locator('[data-elig="…"]').click()` times out waiting for the
+  button to become visible.
+- **The first `astro preview` may run on a different port than you
+  expect** if another `astro preview` is already up. Always check
+  `ss -tlnp | grep <port>` and `curl -s http://…/ | grep -c data-elig`
+  before assuming a 200 OK means your app.
+- **Playwright's bundled chromium version can lag behind `npm install`'s
+  `@playwright/test` version.** This image has `chromium-1228` cached
+  while `@playwright/test@1.60.0` wants `chromium-1223` —
+  `npx playwright install` would try to download 1223 and fail. The
+  driver avoids the problem by passing `executablePath` directly with
+  the newest `chromium-*` directory from the cache.
 
 ## Troubleshooting
 
-- **`Preview server is not reachable at http://localhost:4321`** — start
-  it first (`npx astro preview --port 4321 --host 127.0.0.1 &`), or pass
-  `--url` with a different port.
-- **`No Chromium binary found`** — run `npx playwright install chromium`
-  or `sudo apt-get install -y chromium`.
+- **`Preview server is not reachable at http://…:N`** — the driver
+  opens a TCP probe before launching Chromium. Start the preview
+  first (`nohup npx astro preview --port N …`) and wait for
+  `curl -sf` to succeed before re-running.
+- **`No chromium binary found`** — the resolver checked the Playwright
+  cache and `/usr/bin/{chromium,chromium-browser,google-chrome}`. Run
+  `npx playwright install chromium` (~150 MB) or
+  `apt-get install -y chromium` on a clean container.
+- **`locator.click: Timeout … waiting for [data-elig=…]`** — the page
+  you loaded is not the Supletivo Brasil landing. Curl the URL and
+  check `data-elig=` appears in the response; if it doesn't, another
+  app is squatting the port.
 - **`Ref attribution broken: N/M CTAs missing ref=…`** — the
-  `src/scripts/attribution.ts` first-touch rule was bypassed, or the
-  build is stale. `rm -rf dist && npm run build` and re-run.
-- **`cta_click event missing after hero click`** — the click handler in
-  `main.ts` (line 21) bubbles on `document`, so the click target must be
-  inside an `a[data-cta]`. If the hero CTA lost its `data-cta` attribute
-  in a refactor, the driver will catch it here.
-- **`scroll_depth=25 not fired (got …)`** — the page is short
-  (`document.scrollHeight < 4 × viewport`). Run on the production
-  viewport, or scroll programmatically to the bottom before measuring.
+  `?ref=…` token didn't propagate. Check `src/scripts/attribution.ts`
+  and the import order in `src/scripts/main.ts`. The attribution runs
+  in `initAttribution()` before any `track()` calls, so if
+  `decorateCtas(attr)` didn't run, every `<a data-cta>` keeps its
+  server-rendered href.
+- **`scroll_depth=NN not fired`** — the page is too short, or the
+  `setTimeout(scroll, 30)` chain in the driver raced past the
+  observer. The driver scrolls in 400-px steps; if the page has been
+  shortened below ~3200 px, depth=75/100 will never fire.
 - **Screenshots look like the hero even after scrolling** — the CSS
-  `scroll-behavior: smooth` on `html` is fighting Playwright. The driver
-  already works around this; if you copy-paste a snippet that uses
-  `page.screenshot()` directly, switch to
-  `page.locator('section#ID').screenshot()`.
+  `scroll-behavior: smooth` on `html` is fighting Playwright. The
+  driver already works around this via per-element screenshots; if you
+  copy-paste a snippet that uses `page.screenshot()` directly, switch
+  to `page.locator('section#ID').screenshot()`.
+
+## Driver
+
+The driver lives at `.claude/skills/run-landing-supletivo/driver.mjs`
+in this same directory. It's the canonical way to drive the app from
+a future agent — the human path (`npm run dev` + a real browser) is
+left as a fallback.

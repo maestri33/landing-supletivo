@@ -1,6 +1,6 @@
 {
-  "url": "http://127.0.0.1:4399/",
-  "ref": "agent-i50ovo",
+  "url": "http://127.0.0.1:4325/",
+  "ref": "agent-j7gtp5",
   "shots": [
     "/root/landing-supletivo/.claude/skills/run-landing-supletivo/screenshots/01-hero.png",
     "/root/landing-supletivo/.claude/skills/run-landing-supletivo/screenshots/02-eligibilidade-18mais.png",
@@ -13,7 +13,7 @@
   "dataLayer": [
     {
       "event": "page_view",
-      "ref": "agent-i50ovo",
+      "ref": "agent-j7gtp5",
       "utm_source": "agent",
       "utm_medium": "smoke"
     },
@@ -23,7 +23,7 @@
     },
     {
       "event": "page_view",
-      "ref": "agent-i50ovo",
+      "ref": "agent-j7gtp5",
       "utm_source": "agent",
       "utm_medium": "smoke"
     },
@@ -37,7 +37,7 @@
     },
     {
       "event": "page_view",
-      "ref": "agent-i50ovo",
+      "ref": "agent-j7gtp5",
       "utm_source": "agent",
       "utm_medium": "smoke"
     },
@@ -51,7 +51,7 @@
     },
     {
       "event": "page_view",
-      "ref": "agent-i50ovo",
+      "ref": "agent-j7gtp5",
       "utm_source": "agent",
       "utm_medium": "smoke"
     },
@@ -121,23 +121,23 @@
   "ctaHrefs": [
     {
       "position": "hero",
-      "href": "https://app.supletivo.net.br/?ref=agent-i50ovo&utm_source=agent&utm_medium=smoke"
+      "href": "https://app.supletivo.net.br/?ref=agent-j7gtp5&utm_source=agent&utm_medium=smoke"
     },
     {
       "position": "elegibilidade",
-      "href": "https://app.supletivo.net.br/?ref=agent-i50ovo&utm_source=agent&utm_medium=smoke"
+      "href": "https://app.supletivo.net.br/?ref=agent-j7gtp5&utm_source=agent&utm_medium=smoke"
     },
     {
       "position": "preco",
-      "href": "https://app.supletivo.net.br/?ref=agent-i50ovo&utm_source=agent&utm_medium=smoke"
+      "href": "https://app.supletivo.net.br/?ref=agent-j7gtp5&utm_source=agent&utm_medium=smoke"
     },
     {
       "position": "final",
-      "href": "https://app.supletivo.net.br/?ref=agent-i50ovo&utm_source=agent&utm_medium=smoke"
+      "href": "https://app.supletivo.net.br/?ref=agent-j7gtp5&utm_source=agent&utm_medium=smoke"
     },
     {
       "position": "sticky",
-      "href": "https://app.supletivo.net.br/?ref=agent-i50ovo&utm_source=agent&utm_medium=smoke"
+      "href": "https://app.supletivo.net.br/?ref=agent-j7gtp5&utm_source=agent&utm_medium=smoke"
     }
   ],
   "eligibilityResult": "✓ Caminho livre: você pode concluir o Ensino Fundamental e o Médio, 100% online, começando hoje.",
