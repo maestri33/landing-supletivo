@@ -92,7 +92,7 @@ function typeName(el: Element): void {
 }
 
 /* ---------- Reveals por scroll (Intersection Observer) ---------- */
-const revealEls = document.querySelectorAll('[data-reveal], [data-seal], [data-cert]');
+const revealEls = document.querySelectorAll('[data-reveal], [data-seal], [data-cert], [data-price]');
 if (REDUCED || !('IntersectionObserver' in window)) {
   revealEls.forEach((el) => el.classList.add('in-view'));
 } else {
