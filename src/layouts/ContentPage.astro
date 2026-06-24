@@ -82,7 +82,7 @@ const { title, description, noindex = false, kicker, h1, ogImage } = Astro.props
     color: var(--ink);
   }
 
-  .prose :global(a) {
+  .prose :global(a:not(.btn)) {
     color: var(--green);
     font-weight: 700;
     text-underline-offset: 3px;

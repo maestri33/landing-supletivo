@@ -38,6 +38,12 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   use: {
     baseURL: BASE,
+    // reducedMotion lives inside contextOptions — Playwright 1.60's test
+    // runner enumerates known context options explicitly and does NOT
+    // forward a top-level `reducedMotion` to `browser.newContext()`.
+    // (The driver.mjs also passes `reducedMotion: 'reduce'` to
+    // `chromium.launch` for its non-fixture path.)
+    contextOptions: { reducedMotion: 'reduce' },
   },
   projects: [
     {
