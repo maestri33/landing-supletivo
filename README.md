@@ -6,7 +6,7 @@ framework de UI, zero pixel de terceiros.
 
 ## Requisitos
 
-- Node.js 20+ (testado com 22)
+- Node.js 20.9+ (testado com 22)
 - npm
 
 ## Comandos
