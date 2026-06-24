@@ -70,11 +70,10 @@ test.describe('eventos no dataLayer', () => {
     await page.evaluate(async () => {
       const doc = document.documentElement;
       for (let y = 0; y <= doc.scrollHeight; y += 400) {
-        // instant: ignora o scroll-behavior:smooth do CSS
-        window.scrollTo({ top: y, behavior: 'instant' });
+        window.scrollTo({ top: y });
         await new Promise((r) => setTimeout(r, 30));
       }
-      window.scrollTo({ top: doc.scrollHeight, behavior: 'instant' });
+      window.scrollTo({ top: doc.scrollHeight });
     });
     await page.waitForTimeout(400);
 

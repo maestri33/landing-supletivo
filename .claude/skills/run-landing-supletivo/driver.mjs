@@ -56,6 +56,7 @@ import('@playwright/test')
     const browser = await chromium.launch({
       executablePath: EXEC,
       args: ['--no-sandbox', '--disable-dev-shm-usage'],
+      reducedMotion: 'reduce',
     });
     const ctx = await browser.newContext({ viewport: { width: VIEWPORT[0], height: VIEWPORT[1] } });
     const page = await ctx.newPage();
@@ -74,15 +75,9 @@ import('@playwright/test')
     await page.goto(target, { waitUntil: 'domcontentloaded' });
     await page.waitForLoadState('networkidle').catch(() => {});
 
-    // The page uses [data-reveal] + IntersectionObserver to fade sections in
-    // (opacity 0 → 1). In headless capture we want every element visible
-    // regardless of whether the observer has fired for it. Without this,
-    // Playwright's `.click()` blocks waiting for the button to be visible
-    // (it stays at opacity 0 until the section scrolls into the IO root).
-    await page.evaluate(() => {
-      document.querySelectorAll('[data-reveal],[data-seal],[data-cert]').forEach((el) => el.classList.add('in-view'));
-      document.querySelectorAll('[data-lit]').forEach((el) => el.classList.add('lit'));
-    });
+    // Reduced motion is set via Playwright's `reducedMotion: 'reduce'`, so
+    // main.ts auto-adds `.in-view` to every `[data-reveal]/[data-seal]/[data-cert]`
+    // and `.lit` to every `[data-lit]` on script load — no manual shim needed.
 
     const ctaCount = await page.locator('a[data-cta]').count();
     if (ctaCount === 0) die('No a[data-cta] elements found on the page.');
@@ -184,10 +179,6 @@ import('@playwright/test')
     // ---- 7. Section snapshots (mirrored from tools/shots.mjs) -------------
     await page.goto(target, { waitUntil: 'domcontentloaded' });
     await page.waitForLoadState('networkidle').catch(() => {});
-    await page.evaluate(() => {
-      document.querySelectorAll('[data-reveal],[data-seal],[data-cert]').forEach((el) => el.classList.add('in-view'));
-      document.querySelectorAll('[data-lit]').forEach((el) => el.classList.add('lit'));
-    });
     for (const [id, file] of [
       ['espelho', '05-espelho.png'],
       ['confianca', '06-confianca.png'],
