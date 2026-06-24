@@ -1,0 +1,174 @@
+{
+  "url": "http://127.0.0.1:4399/",
+  "ref": "agent-i50ovo",
+  "shots": [
+    "/root/landing-supletivo/.claude/skills/run-landing-supletivo/screenshots/01-hero.png",
+    "/root/landing-supletivo/.claude/skills/run-landing-supletivo/screenshots/02-eligibilidade-18mais.png",
+    "/root/landing-supletivo/.claude/skills/run-landing-supletivo/screenshots/03-faq.png",
+    "/root/landing-supletivo/.claude/skills/run-landing-supletivo/screenshots/04-footer.png",
+    "/root/landing-supletivo/.claude/skills/run-landing-supletivo/screenshots/05-espelho.png",
+    "/root/landing-supletivo/.claude/skills/run-landing-supletivo/screenshots/06-confianca.png",
+    "/root/landing-supletivo/.claude/skills/run-landing-supletivo/screenshots/07-preco.png"
+  ],
+  "dataLayer": [
+    {
+      "event": "page_view",
+      "ref": "agent-i50ovo",
+      "utm_source": "agent",
+      "utm_medium": "smoke"
+    },
+    {
+      "event": "section_view",
+      "section": "hero"
+    },
+    {
+      "event": "page_view",
+      "ref": "agent-i50ovo",
+      "utm_source": "agent",
+      "utm_medium": "smoke"
+    },
+    {
+      "event": "section_view",
+      "section": "hero"
+    },
+    {
+      "event": "cta_click",
+      "position": "hero"
+    },
+    {
+      "event": "page_view",
+      "ref": "agent-i50ovo",
+      "utm_source": "agent",
+      "utm_medium": "smoke"
+    },
+    {
+      "event": "section_view",
+      "section": "hero"
+    },
+    {
+      "event": "faq_open",
+      "question": "O certificado é reconhecido? Vale em todo o Brasil?"
+    },
+    {
+      "event": "page_view",
+      "ref": "agent-i50ovo",
+      "utm_source": "agent",
+      "utm_medium": "smoke"
+    },
+    {
+      "event": "section_view",
+      "section": "hero"
+    },
+    {
+      "event": "section_view",
+      "section": "espelho"
+    },
+    {
+      "event": "section_view",
+      "section": "como-funciona"
+    },
+    {
+      "event": "scroll_depth",
+      "depth": 25
+    },
+    {
+      "event": "section_view",
+      "section": "elegibilidade"
+    },
+    {
+      "event": "section_view",
+      "section": "confianca"
+    },
+    {
+      "event": "section_view",
+      "section": "validade"
+    },
+    {
+      "event": "scroll_depth",
+      "depth": 50
+    },
+    {
+      "event": "section_view",
+      "section": "preco"
+    },
+    {
+      "event": "section_view",
+      "section": "virada"
+    },
+    {
+      "event": "scroll_depth",
+      "depth": 75
+    },
+    {
+      "event": "section_view",
+      "section": "faq"
+    },
+    {
+      "event": "section_view",
+      "section": "final"
+    },
+    {
+      "event": "scroll_depth",
+      "depth": 100
+    }
+  ],
+  "consoleErrors": [],
+  "axe": {
+    "violations": 0,
+    "details": []
+  },
+  "ctaCount": 5,
+  "ctaHrefs": [
+    {
+      "position": "hero",
+      "href": "https://app.supletivo.net.br/?ref=agent-i50ovo&utm_source=agent&utm_medium=smoke"
+    },
+    {
+      "position": "elegibilidade",
+      "href": "https://app.supletivo.net.br/?ref=agent-i50ovo&utm_source=agent&utm_medium=smoke"
+    },
+    {
+      "position": "preco",
+      "href": "https://app.supletivo.net.br/?ref=agent-i50ovo&utm_source=agent&utm_medium=smoke"
+    },
+    {
+      "position": "final",
+      "href": "https://app.supletivo.net.br/?ref=agent-i50ovo&utm_source=agent&utm_medium=smoke"
+    },
+    {
+      "position": "sticky",
+      "href": "https://app.supletivo.net.br/?ref=agent-i50ovo&utm_source=agent&utm_medium=smoke"
+    }
+  ],
+  "eligibilityResult": "✓ Caminho livre: você pode concluir o Ensino Fundamental e o Médio, 100% online, começando hoje.",
+  "sections": [
+    "hero",
+    "espelho",
+    "como-funciona",
+    "elegibilidade",
+    "confianca",
+    "validade",
+    "preco",
+    "virada",
+    "faq",
+    "final"
+  ],
+  "subpages": {
+    "/supletivo-online/": {
+      "status": 200
+    },
+    "/eja-a-distancia/": {
+      "status": 200
+    },
+    "/terminar-ensino-medio/": {
+      "status": 200
+    },
+    "/termos/": {
+      "status": 200
+    },
+    "/privacidade/": {
+      "status": 200
+    }
+  },
+  "consoleErrorCount": 0
+}
