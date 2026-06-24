@@ -61,9 +61,15 @@ async function loadPrice(): Promise<Price> {
     const plausible = perMonth >= MIN_PER_MONTH && pixTotal >= MIN_PIX;
 
     if (!numbersOk || !plausible) {
-      console.warn(
-        `[price] backend devolveu valor implausível/incompleto — usando fallback. payload=${JSON.stringify(data)}`
-      );
+      const msg = `[price] backend devolveu valor implausível/incompleto — usando fallback. payload=${JSON.stringify(data)}`;
+      // Em PROD o build CI é silencioso quanto a warnings; escalamos para error
+      // para que a integração quebrada vire ruído no stderr/stdout do pipeline.
+      // Não quebramos o build — o FALLBACK é o preço canônico.
+      if (import.meta.env.PROD) {
+        console.error(msg);
+      } else {
+        console.warn(msg);
+      }
       return FALLBACK;
     }
 

@@ -30,6 +30,19 @@ const {
 const site = Astro.site!;
 const canonical = new URL(Astro.url.pathname, site);
 const ogImage = new URL(ogImagePath, site);
+
+/**
+ * Embute JSON-LD dentro de <script>: precisa escapar `</` para `<\/` caso
+ * o conteúdo contenha `</script>` (ou `</style>`) — senão o browser fecha o
+ * script prematuramente. JSON.parse reverte: `\/` == `/` em string.
+ * Também blindamos contra HTML cru que possa vazar em campos de texto.
+ */
+function escapeJsonLd(json: string): string {
+  return json
+    .replace(/</g, '\\u003c')
+    .replace(/>/g, '\\u003e')
+    .replace(/&/g, '\\u0026');
+}
 ---
 
 <!doctype html>
@@ -91,7 +104,7 @@ const ogImage = new URL(ogImagePath, site);
       document.documentElement.classList.add('js');
     </script>
 
-    {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+    {schema && <script type="application/ld+json" set:html={escapeJsonLd(JSON.stringify(schema))} />}
 
     <!--
       ANALYTICS / TAGS DE TERCEIROS
