@@ -10,3 +10,6 @@ tools/fonts/
 test-results/
 playwright-report/
 .preview-port
+
+# agent runtime (worktrees + skills + settings locais)
+.claude/worktrees/
