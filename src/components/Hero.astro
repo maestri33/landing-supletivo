@@ -50,7 +50,8 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
   <div class="container hero-inner">
     <p class="hero-eyebrow anim-up" style="--i: 0">
       <span class="dot" aria-hidden="true"></span>
-      Supletivo online · Educação de Jovens e Adultos (EJA)
+      <span class="eyebrow-short">Supletivo online · EJA</span>
+      <span class="eyebrow-full">Supletivo online · Educação de Jovens e Adultos (EJA)</span>
     </p>
 
     <h1 id="hero-title" class="hero-title">
@@ -129,9 +130,10 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
     min-height: 100svh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    /* topo respeita notch/Dynamic Island (viewport-fit=cover no Base) */
-    padding-top: max(clamp(7rem, 16vh, 9rem), calc(env(safe-area-inset-top) + 6rem));
+    justify-content: flex-start;
+    /* topo respeita notch/Dynamic Island (viewport-fit=cover no Base).
+       Mobile-first: padding menor pra CTA caber above-the-fold em 360px. */
+    padding-top: max(clamp(4.5rem, 10vh, 9rem), calc(env(safe-area-inset-top) + 3.5rem));
     padding-bottom: 0;
     background:
       radial-gradient(58rem 32rem at 18% 4%, rgb(255 196 0 / 0.1), transparent 62%),
@@ -217,11 +219,12 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
   }
 
   /* bandeira-diploma: mobile é o canal principal — entra no fluxo,
-     logo depois do CTA; no desktop vira a peça absoluta da direita */
+     logo depois do CTA; no desktop vira a peça absoluta da direita.
+     Em 360px, menor pra não empurrar CTA pra fora do fold. */
   .hero-diploma {
     order: 2;
-    width: min(88vw, 430px);
-    margin: 2.8rem auto 0;
+    width: min(72vw, 300px);
+    margin: 1.6rem auto 0;
     pointer-events: none;
   }
 
@@ -262,7 +265,7 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
 
   .hero-inner {
     position: relative;
-    padding-bottom: clamp(5rem, 11vh, 7rem);
+    padding-bottom: clamp(1.5rem, 4vh, 5rem);
   }
 
   .hero-eyebrow {
@@ -277,7 +280,7 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
     border: 1px solid rgb(255 196 0 / 0.4);
     border-radius: 999px;
     padding: 0.5em 1.1em;
-    margin-bottom: 1.8rem;
+    margin-bottom: 1rem;
     background: rgb(255 196 0 / 0.06);
   }
 
@@ -287,6 +290,16 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
     border-radius: 50%;
     background: var(--yellow);
     flex: none;
+  }
+
+  /* mobile: eyebrow curto pra caber em 1 linha em 360px;
+     desktop: texto completo. */
+  .eyebrow-short { display: inline; }
+  .eyebrow-full { display: none; }
+
+  @media (min-width: 480px) {
+    .eyebrow-short { display: none; }
+    .eyebrow-full { display: inline; }
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -362,7 +375,7 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
     font-size: var(--text-lg);
     color: var(--muted-on-dark);
     max-width: 36ch;
-    margin-top: 1.6rem;
+    margin-top: 1rem;
   }
 
   .hero-chips {
@@ -371,7 +384,7 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
     flex-wrap: wrap;
     gap: 0.6rem;
     padding: 0;
-    margin: 1.6rem 0 0;
+    margin: 0.8rem 0 0;
   }
 
   .chip {
@@ -408,25 +421,31 @@ const chips = ['Certificado válido', 'No seu ritmo', 'Pelo celular'];
   }
 
   .hero-cta {
-    margin-top: 2.4rem;
+    margin-top: 1.6rem;
   }
 
   .hero .microcopy {
     color: var(--muted-on-dark);
   }
 
-  /* mobile/tablet: no fluxo, depois da bandeira; desktop: flutua no pé do hero */
+  /* desktop: flutua no pé do hero; mobile: escondido (economiza espaço) */
   .scroll-cue {
     order: 3;
     width: 2.9rem;
     height: 2.9rem;
-    margin: 2.2rem auto 0;
-    display: grid;
+    margin: 1.5rem auto 0;
+    display: none;
     place-items: center;
     color: var(--paper);
     border: 1.5px solid rgb(255 255 255 / 0.3);
     border-radius: 50%;
     z-index: 3;
+  }
+
+  @media (min-width: 720px) {
+    .scroll-cue {
+      display: grid;
+    }
   }
 
   @media (min-width: 960px) {
