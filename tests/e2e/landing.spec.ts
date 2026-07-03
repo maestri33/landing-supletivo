@@ -67,16 +67,20 @@ test.describe('eventos no dataLayer', () => {
 
   test('scroll até o fim dispara scroll_depth 25/50/75/100 e section_view', async ({ page }) => {
     await page.goto('/');
-    await page.evaluate(async () => {
-      const doc = document.documentElement;
-      for (let y = 0; y <= doc.scrollHeight; y += 400) {
-        // instant: ignora o scroll-behavior:smooth do CSS
-        window.scrollTo({ top: y, behavior: 'instant' });
-        await new Promise((r) => setTimeout(r, 30));
-      }
-      window.scrollTo({ top: doc.scrollHeight, behavior: 'instant' });
-    });
-    await page.waitForTimeout(400);
+    // Scroll progressivo com pausas maiores: o IntersectionObserver (threshold 0.35)
+    // precisa de tempo pra disparar entre os saltos; instant scroll sem pausa
+    // suficiente faz o observer perder seções.
+    const doc = await page.evaluateHandle(() => document.documentElement);
+    const scrollHeight = await doc.evaluate((el) => el.scrollHeight);
+    const steps = 20;
+    for (let i = 1; i <= steps; i++) {
+      const y = Math.round((scrollHeight / steps) * i);
+      await page.evaluate((top) => window.scrollTo({ top, behavior: 'instant' }), y);
+      await page.waitForTimeout(120);
+    }
+    // Último empurrão + folga generosa pro observer processar
+    await page.evaluate(() => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' }));
+    await page.waitForTimeout(600);
 
     const dl = await page.evaluate(
       () => (window as unknown as { dataLayer: Record<string, unknown>[] }).dataLayer
@@ -91,6 +95,11 @@ test.describe('eventos no dataLayer', () => {
 
 test('checador de elegibilidade: 18+ mostra CTA qualificado', async ({ page }) => {
   await page.goto('/');
+  // Scroll o botão pro centro da tela: ele fica longe do sticky-cta (fixed bottom)
+  // que cobre ~80px do rodapé e bloqueia o actionability check do Playwright.
+  await page.locator('[data-elig="18mais"]').scrollIntoViewIfNeeded();
+  await page.mouse.wheel(0, 120); // empurra pra cima, fora do alcance do sticky
+  await page.waitForTimeout(200);
   await page.locator('[data-elig="18mais"]').click();
   await expect(page.locator('[data-elig-result]')).toContainText('Caminho livre');
   await expect(page.locator('[data-elig-cta] a[data-cta="elegibilidade"]')).toBeVisible();

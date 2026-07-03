@@ -31,6 +31,15 @@ function tryListen(port) {
 }
 
 async function pickPort() {
+  // Se PORT foi passado explicitamente, usa exatamente essa porta — sem fallback.
+  // Assim o Playwright (que seta PORT) sempre bate com o `webServer.url`.
+  if (process.env.PORT) {
+    const got = await tryListen(PREFERRED);
+    if (got !== PREFERRED) {
+      throw new Error(`Port ${PREFERRED} is occupied — refusing to use a different one (PORT was set explicitly). Kill the stale server first.`);
+    }
+    return PREFERRED;
+  }
   for (let p = PREFERRED; p < PREFERRED + 50; p++) {
     const got = await tryListen(p);
     if (got === p) return p;
