@@ -20,3 +20,11 @@ export const CTA_LABEL = 'Quero meu diploma';
 export const COMPANY_URL = 'https://v7m.org';
 /** Página de vagas / trabalhe conosco */
 export const CAREERS_URL = 'https://job.v7m.org';
+
+/* ----------------------------------------------------------------------------
+ * Identificação legal do fornecedor (CDC art. 31 / LGPD art. 9).
+ * Sem PUBLIC_CNPJ, o rodapé omite a linha do CNPJ em vez de exibir um número
+ * falso — placeholder em produção é bloqueador jurídico.
+ * -------------------------------------------------------------------------- */
+/** CNPJ real da PJ (vazio = não renderiza; não inventar placeholder) */
+export const CNPJ: string = (import.meta.env.PUBLIC_CNPJ ?? '').trim();

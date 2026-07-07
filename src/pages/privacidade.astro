@@ -1,10 +1,12 @@
 ---
 /**
  * Política de Privacidade (LGPD) — conteúdo-base completo e honesto com o
- * que a página realmente coleta (inclusive a atribuição de afiliados).
+ * que a página realmente coleta (inclusive a atribuição a quem indicou a
+ * matrícula via Programa de Promotores — veja job.v7m.org).
  * IMPORTANTE: texto-base; recomenda-se revisão por assessoria jurídica.
  */
 import ContentPage from '../layouts/ContentPage.astro';
+import { CNPJ } from '../config';
 
 const title = 'Política de Privacidade | Supletivo Brasil';
 const description =
@@ -16,7 +18,7 @@ const description =
 
   <h2>1. Compromisso</h2>
   <p>
-    O <strong>Supletivo Brasil</strong> (CNPJ 48.811.016/0001-00) trata os seus
+    O <strong>Supletivo Brasil</strong>{CNPJ ? ` (CNPJ ${CNPJ})` : ''} trata os seus
     dados pessoais de acordo com a Lei Geral de Proteção de Dados — LGPD (Lei
     nº 13.709/2018). Esta página explica, em linguagem simples, o que
     coletamos e por quê.
@@ -57,7 +59,11 @@ const description =
   <h2>4. Para que usamos</h2>
   <ul>
     <li>Processar a sua matrícula e emitir a certificação;</li>
-    <li>Remunerar corretamente quem indicou você (programa de indicação);</li>
+    <li>
+      Remunerar corretamente quem indicou você por meio do Programa de
+      Promotores (veja
+      <a href="https://job.v7m.org/?utm_source=supletivo.net.br&utm_medium=privacidade&utm_campaign=promotores">job.v7m.org</a>);
+    </li>
     <li>Comunicar informações sobre o seu curso;</li>
     <li>Medir o desempenho das nossas páginas de forma agregada.</li>
   </ul>

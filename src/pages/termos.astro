@@ -4,6 +4,7 @@
  * IMPORTANTE: texto-base; recomenda-se revisão por assessoria jurídica.
  */
 import ContentPage from '../layouts/ContentPage.astro';
+import { CNPJ } from '../config';
 
 const title = 'Termos de Uso | Supletivo Brasil';
 const description =
@@ -15,7 +16,7 @@ const description =
 
   <h2>1. Quem somos</h2>
   <p>
-    O <strong>Supletivo Brasil</strong> (CNPJ 48.811.016/0001-00) fornece
+    O <strong>Supletivo Brasil</strong>{CNPJ ? ` (CNPJ ${CNPJ})` : ''} fornece
     material didático e preparação para a conclusão do Ensino Fundamental e do
     Ensino Médio na modalidade Educação de Jovens e Adultos (EJA), 100% online,
     e intermedia a certificação junto a instituição parceira credenciada ao

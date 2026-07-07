@@ -1,11 +1,16 @@
 ---
 /**
- * Seção 8b — Rodapé: logo, CNPJ (placeholder), links legais, aviso LGPD.
+ * Seção 8b — Rodapé: logo, CNPJ (env-driven), links legais, aviso LGPD.
  */
 import Logo from './Logo.astro';
-import { COMPANY_URL, CAREERS_URL } from '../config';
+import { COMPANY_URL, CAREERS_URL, CNPJ } from '../config';
 
 const year = new Date().getFullYear();
+// linha do CNPJ só renderiza se PUBLIC_CNPJ estiver preenchido —
+// ausência é melhor que número falso (CDC art. 31).
+const legalId = ['Supletivo Brasil', CNPJ ? `CNPJ ${CNPJ}` : null, 'contato@supletivo.net.br']
+  .filter(Boolean)
+  .join(' · ');
 ---
 
 <footer class="footer on-dark">
@@ -59,7 +64,7 @@ const year = new Date().getFullYear();
     </div>
 
     <div class="footer-legal">
-      <p>Supletivo Brasil · CNPJ 48.811.016/0001-00 · contato@supletivo.net.br</p>
+      <p>{legalId}</p>
       <p>
         O Supletivo Brasil fornece o material didático e a preparação para a
         EJA. A certificação é emitida por instituição parceira credenciada ao
