@@ -25,6 +25,12 @@ const description =
 const site = Astro.site!;
 const siteUrl = site.href;
 
+// priceValidUntil: rolling +1 ano a partir do build (estático, sem JS).
+// Mantém a oferta "viva" para o Google por 12 meses a partir do deploy.
+const priceValidUntil = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
+  .toISOString()
+  .slice(0, 10);
+
 // JSON-LD — sem citar nome de instituição parceira (regra de copy)
 const schema = {
   '@context': 'https://schema.org',
@@ -43,6 +49,18 @@ const schema = {
       description:
         'Educação de Jovens e Adultos (EJA) com estudo 100% online e prova final presencial, para concluir o Ensino Fundamental ou o Ensino Médio, com certificação emitida por instituição parceira credenciada ao MEC e validade em todo o território nacional.',
       url: siteUrl,
+      inLanguage: 'pt-BR',
+      educationalCredentialAwarded:
+        'Certificado de Conclusão do Ensino Fundamental e Médio (EJA)',
+      hasCourseInstance: {
+        '@type': 'CourseInstance',
+        courseMode: 'online',
+        inLanguage: 'pt-BR',
+        location: {
+          '@type': 'VirtualLocation',
+          url: siteUrl,
+        },
+      },
       provider: { '@id': `${siteUrl}#org` },
       offers: {
         '@type': 'AggregateOffer',
@@ -51,6 +69,8 @@ const schema = {
         highPrice: String(PRICE.cardTotal),
         offerCount: '2',
         url: siteUrl,
+        priceValidUntil,
+        availability: 'https://schema.org/InStock',
       },
     },
     {
