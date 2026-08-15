@@ -1,0 +1,115 @@
+---
+/**
+ * "A vida entrou na frente" (seção 7.5 do handoff): identificação sem culpa.
+ * Ícones editoriais (sem caricatura escolar, sem beca/diploma de banco).
+ */
+const cenas = [
+  {
+    titulo: 'O trabalho tomou os horários',
+    texto: 'Turno, escala, bico. Estudar foi ficando para “semana que vem”.',
+    icon: 'M12 7v5l3.5 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',
+  },
+  {
+    titulo: 'A família precisou de você',
+    texto: 'Filhos, pais, casa. Você segurou o que ninguém mais segurava.',
+    icon: 'M12 21s-7-4.6-9.3-9A5.4 5.4 0 0 1 12 6.2 5.4 5.4 0 0 1 21.3 12C19 16.4 12 21 12 21Z',
+  },
+  {
+    titulo: 'As contas vieram antes',
+    texto: 'Aluguel, feira, transporte. O estudo esperou o dinheiro sobrar.',
+    icon: 'M4 8h16v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8Zm0 0 2-4h12l2 4M9 13h6',
+  },
+  {
+    titulo: 'A vida mudou de lugar',
+    texto: 'Cidade nova, rotina nova. O recomeço ficou sem endereço.',
+    icon: 'M12 21c4-4.5 7-8.3 7-11.5A7 7 0 1 0 5 9.5C5 12.7 8 16.5 12 21Zm0-9.3a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4Z',
+  },
+];
+---
+
+<section id="vida" class="lc-vida section" aria-labelledby="lc-vida-title" data-lc-section="vida">
+  <div class="container">
+    <p class="lc-milestone" data-reveal>4 · A vida entrou na frente</p>
+    <h2 id="lc-vida-title" class="lc-h2" data-reveal>Parar de estudar não apaga o que você viveu</h2>
+    <p class="lc-lead" data-reveal style="--d: 1">
+      Trabalho, filhos, contas, mudança de cidade, cansaço. Se isso soa familiar, é porque a sua
+      história é a de milhões de adultos — e ela não terminou.
+    </p>
+
+    <ul class="lc-vida-grid">
+      {
+        cenas.map((c, i) => (
+          <li class="lc-vida-card" data-reveal style={`--d: ${Math.min(i + 1, 4)}`}>
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d={c.icon}
+                stroke="var(--lc-blue)"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <h3>{c.titulo}</h3>
+            <p>{c.texto}</p>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="lc-vida-close" data-reveal>
+      Nem o que você já viveu, nem o que ainda quer construir.
+      <strong> A linha continua.</strong>
+    </p>
+  </div>
+</section>
+
+<style>
+  .lc-vida {
+    background: var(--lc-paper);
+  }
+
+  .lc-vida .lc-lead {
+    margin-top: 1.2rem;
+  }
+
+  .lc-vida-grid {
+    list-style: none;
+    padding: 0;
+    margin-top: 2.6rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));
+    gap: 1rem;
+  }
+
+  .lc-vida-card {
+    border: 1px solid var(--lc-line-soft);
+    border-radius: var(--radius);
+    padding: 1.4rem 1.3rem;
+    background: var(--lc-paper-soft);
+  }
+
+  .lc-vida-card h3 {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--lc-blue);
+    margin-top: 0.9rem;
+  }
+
+  .lc-vida-card p {
+    margin-top: 0.5rem;
+    color: var(--lc-muted);
+    font-size: 0.97rem;
+  }
+
+  .lc-vida-close {
+    margin-top: 2.4rem;
+    font-size: var(--text-lg);
+    color: var(--lc-muted);
+    max-width: 46ch;
+  }
+
+  .lc-vida-close strong {
+    color: var(--lc-blue);
+  }
+</style>

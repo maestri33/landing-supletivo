@@ -1,0 +1,103 @@
+---
+/**
+ * A Linha Contínua — fio condutor da página (seções 5 e 9 do handoff).
+ *
+ * Implementação: barras HTML com transform scaleY (GPU) em vez de SVG
+ * escalado — SVG com preserveAspectRatio="none" + dash calcula o padrão
+ * em px de viewport no Chromium e quebra o progresso. transform/opacity
+ * é exatamente o que a motion spec manda priorizar.
+ *
+ * - Fixo na borda esquerda, pointer-events: none, fora da árvore de a11y.
+ * - Progresso = posição real de scroll; respostas do diagnóstico também
+ *   empurram a linha (boost até o marco seguinte).
+ * - Marcos (dots) posicionados pela posição real das seções no documento.
+ * - prefers-reduced-motion / sem JS: linha completa e marcos acesos
+ *   (estado estático — o movimento nunca é o único indicador).
+ * - Nunca atravessa texto: fica na calha esquerda, fora do fluxo.
+ */
+---
+
+<div class="lc-line" aria-hidden="true" data-lc-line>
+  {/* trilho de fundo (o que ainda falta percorrer) */}
+  <div class="lc-line-track"></div>
+  {/* o passado: traço curto e interrompido no início */}
+  <div class="lc-line-past"></div>
+  {/* o progresso amarelo: scaleY dirigido por scroll + respostas */}
+  <div class="lc-line-fill" data-lc-line-progress></div>
+  {/* marcos: criados/posicionados pelo script (classe global .lc-line-dot) */}
+  <div class="lc-line-dots" data-lc-line-dots></div>
+</div>
+
+<style>
+  .lc-line {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: clamp(7px, 1.4vw, 26px);
+    width: 14px;
+    z-index: 30;
+    pointer-events: none;
+  }
+
+  .lc-line-track,
+  .lc-line-fill,
+  .lc-line-past {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    translate: -50% 0;
+    border-radius: 4px;
+  }
+
+  .lc-line-track {
+    width: 3px;
+    background: var(--lc-line-soft);
+  }
+
+  .lc-line-past {
+    bottom: auto;
+    height: 5%;
+    width: 3px;
+    /* interrompido: onde a pessoa parou */
+    background: repeating-linear-gradient(
+      to bottom,
+      #b8bfd0 0 8px,
+      transparent 8px 14px
+    );
+  }
+
+  .lc-line-fill {
+    width: 4px;
+    background: var(--lc-yellow);
+    box-shadow: 0 0 6px rgb(255 223 0 / 0.5);
+    transform: scaleY(0); /* começa "parada": só o passado visível */
+    transform-origin: top center;
+    will-change: transform;
+  }
+
+  .lc-line-dots {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* Em telas muito estreitas a calha some: afinar, não cobrir conteúdo */
+  @media (max-width: 480px) {
+    .lc-line {
+      left: 4px;
+      width: 10px;
+    }
+  }
+
+  /* Movimento reduzido ou sem JS: linha completa — a narrativa funciona
+     sem animação (regra obrigatória do handoff) */
+  @media (prefers-reduced-motion: reduce) {
+    .lc-line-fill {
+      transform: scaleY(1);
+    }
+  }
+
+  html:not(.js) .lc-line-fill {
+    transform: scaleY(1);
+  }
+</style>

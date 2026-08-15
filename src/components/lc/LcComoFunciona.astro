@@ -1,0 +1,192 @@
+---
+/**
+ * Como funciona (seção 7.6 do handoff): remove ambiguidade operacional.
+ * Estrutura-base sujeita à validação acadêmica [VALIDAR no handoff].
+ * Cada etapa: o que a pessoa faz, o que a instituição faz, esforço e
+ * documentos/condições. Timeline vertical, não prende o scroll.
+ */
+const etapas = [
+  {
+    n: '1',
+    titulo: 'Entenda sua situação',
+    voce: 'Conta onde parou, sua idade, seu estado e o que quer destravar.',
+    nos: 'Direcionamos a etapa aplicável (Fundamental ou Médio) e o que ela exige.',
+    detalhe: 'Cerca de 1 minuto, sem cadastro.',
+  },
+  {
+    n: '2',
+    titulo: 'Confira documentos e regras',
+    voce: 'Separa os documentos indicados para o seu caso, com a lista na mão.',
+    nos: 'Confirmamos regras do seu estado, documentos exatos e disponibilidade de polo.',
+    detalhe: 'Documento de identidade e histórico escolar, quando houver.',
+  },
+  {
+    n: '3',
+    titulo: 'Siga o plano orientado',
+    voce: 'Estuda 100% online, pelo celular, no horário que couber na rotina.',
+    nos: 'Organizamos o conteúdo em trilha, com acompanhamento e suporte no app.',
+    detalhe: 'O ritmo é seu: sem data fixa de aula, sem deslocamento para estudar.',
+  },
+  {
+    n: '4',
+    titulo: 'Conclua as etapas aplicáveis',
+    voce: 'Marca a prova final presencial quando se sentir preparado e assina a documentação.',
+    nos: 'Enviamos a documentação à Secretaria de Educação e conduzimos a certificação.',
+    detalhe: 'A prova é em polo, com data escolhida por você — esse passo dá validade oficial.',
+  },
+];
+---
+
+<section
+  id="como-funciona"
+  class="lc-como section"
+  aria-labelledby="lc-como-title"
+  data-lc-section="como-funciona"
+>
+  <div class="container">
+    <p class="lc-milestone" data-reveal>5 · Como funciona</p>
+    <h2 id="lc-como-title" class="lc-h2" data-reveal>Um caminho com quatro marcos</h2>
+    <p class="lc-lead" data-reveal style="--d: 1">
+      O que é flexível (horário, ritmo, lugar de estudo) e o que exige presença e documento
+      (a prova final) — sem letra miúda.
+    </p>
+
+    <ol class="lc-timeline">
+      {
+        etapas.map((e, i) => (
+          <li class="lc-step" data-reveal style={`--d: ${Math.min(i, 3)}`}>
+            <span class="lc-step-n" aria-hidden="true">{e.n}</span>
+            <div class="lc-step-body">
+              <h3>{e.titulo}</h3>
+              <dl class="lc-step-dl">
+                <div>
+                  <dt>Você</dt>
+                  <dd>{e.voce}</dd>
+                </div>
+                <div>
+                  <dt>A gente</dt>
+                  <dd>{e.nos}</dd>
+                </div>
+              </dl>
+              <p class="lc-step-detail">{e.detalhe}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+
+    <div class="lc-como-cta" data-reveal>
+      <a class="lc-btn-ghost" href="#verifique" data-cta="como-funciona-detalhes">
+        Conferir detalhes: como verificar antes de decidir →
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .lc-como {
+    background: var(--lc-paper-soft);
+  }
+
+  .lc-como .lc-lead {
+    margin-top: 1.2rem;
+  }
+
+  .lc-timeline {
+    list-style: none;
+    padding: 0;
+    margin-top: 2.6rem;
+    display: grid;
+    gap: 0;
+    max-width: 52rem;
+  }
+
+  .lc-step {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.1rem;
+    position: relative;
+    padding-bottom: 2.2rem;
+  }
+
+  /* trilho vertical da timeline (a "linha" local desta seção) */
+  .lc-step::before {
+    content: '';
+    position: absolute;
+    left: 1.35rem;
+    top: 2.9rem;
+    bottom: 0.2rem;
+    width: 3px;
+    border-radius: 2px;
+    background: var(--lc-yellow);
+  }
+
+  .lc-step:last-child::before {
+    display: none;
+  }
+
+  .lc-step-n {
+    width: 2.7rem;
+    height: 2.7rem;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-family: var(--font-display);
+    color: var(--lc-blue);
+    background: #fff;
+    border: 2px solid var(--lc-yellow);
+    z-index: 1;
+  }
+
+  .lc-step-body {
+    background: #fff;
+    border: 1px solid var(--lc-line-soft);
+    border-radius: var(--radius);
+    padding: 1.3rem 1.4rem;
+  }
+
+  .lc-step-body h3 {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 1.12rem;
+    color: var(--lc-blue);
+  }
+
+  .lc-step-dl {
+    margin-top: 0.9rem;
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .lc-step-dl div {
+    display: grid;
+    grid-template-columns: 5.2rem 1fr;
+    gap: 0.8rem;
+    align-items: baseline;
+  }
+
+  .lc-step-dl dt {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--lc-green-deep);
+  }
+
+  .lc-step-dl dd {
+    margin: 0;
+    color: var(--lc-muted);
+  }
+
+  .lc-step-detail {
+    margin-top: 0.9rem;
+    font-size: 0.92rem;
+    color: var(--lc-muted);
+    border-top: 1px dashed var(--lc-line-soft);
+    padding-top: 0.8rem;
+  }
+
+  .lc-como-cta {
+    margin-top: 0.6rem;
+  }
+</style>

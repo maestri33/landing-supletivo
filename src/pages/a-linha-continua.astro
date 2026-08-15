@@ -1,0 +1,75 @@
+---
+/**
+ * Campanha "A Linha Contínua" — handoff v1.0 (10/08/2026):
+ * .claude/campaigns/supletivo-linha-continua/handoff-landing-a-linha-continua.md
+ *
+ * noindex ATÉ resolver os 5 bloqueadores da seção 2 do handoff
+ * (quantidade, evento, preço de referência, claims, continuidade no app).
+ */
+import Base from '../layouts/Base.astro';
+import '../styles/linha-continua.css';
+import LcLinha from '../components/lc/LcLinha.astro';
+import LcHeader from '../components/lc/LcHeader.astro';
+import LcHero from '../components/lc/LcHero.astro';
+import LcDiagnostico from '../components/lc/LcDiagnostico.astro';
+import LcVida from '../components/lc/LcVida.astro';
+import LcComoFunciona from '../components/lc/LcComoFunciona.astro';
+import LcVerifique from '../components/lc/LcVerifique.astro';
+import LcOferta from '../components/lc/LcOferta.astro';
+import LcFaq from '../components/lc/LcFaq.astro';
+import LcFinal from '../components/lc/LcFinal.astro';
+import Footer from '../components/Footer.astro';
+import { LC_FAQ } from '../data/linha-continua';
+import { BRAND } from '../config';
+
+const title = 'Você não precisa voltar ao começo | Supletivo Brasil';
+const description =
+  'Descubra um caminho possível para concluir seus estudos — Ensino Fundamental ou Médio EJA — com orientação clara, estudo online e prova final presencial. Primeiro você vê o caminho; seus dados vêm depois.';
+
+const site = Astro.site!;
+const siteUrl = site.href;
+
+// FAQPage apenas — sem Offer no schema enquanto a regra da condição
+// não é decidida (seção 2 do handoff).
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${siteUrl}#org`,
+      name: BRAND,
+      url: siteUrl,
+      logo: new URL('/apple-touch-icon.png', site).href,
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: LC_FAQ.map((item) => ({
+        '@type': 'Question',
+        name: item.q,
+        acceptedAnswer: { '@type': 'Answer', text: `${item.short} ${item.a}` },
+      })),
+    },
+  ],
+};
+---
+
+<Base {title} {description} {schema} noindex={true}>
+  <div class="lc-page">
+    <LcLinha />
+    <LcHeader />
+    <main id="conteudo">
+      <LcHero />
+      <LcDiagnostico />
+      <LcVida />
+      <LcComoFunciona />
+      <LcVerifique />
+      <LcOferta />
+      <LcFaq />
+      <LcFinal />
+    </main>
+    <Footer />
+  </div>
+  <script>
+    import '../scripts/linha-continua.ts';
+  </script>
+</Base>

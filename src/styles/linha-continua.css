@@ -1,0 +1,160 @@
+/* ============================================================
+   Campanha "A Linha Contínua" — tokens e peças compartilhadas.
+   Paleta do handoff (seção 8): azul organiza, verde aciona,
+   amarelo conduz. Escopo: .lc-page (não vaza para outras páginas).
+   ============================================================ */
+.lc-page {
+  /* Paleta do handoff */
+  --lc-blue: #012169;
+  --lc-blue-deep: #000f38;
+  --lc-green: #009c3b;
+  --lc-green-deep: #007a2e;
+  --lc-yellow: #ffdf00;
+  --lc-paper: #ffffff;
+  --lc-paper-soft: #f7f8f4;
+  --lc-ink: #0b1220;
+  --lc-muted: #49536a;
+  --lc-line-soft: #e4e7ee;
+  --lc-error: #b3261e;
+}
+
+/* ---------- CTA verde (ação) ---------- */
+.lc-btn {
+  touch-action: manipulation;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: clamp(1.02rem, 0.95rem + 0.4vw, 1.18rem);
+  line-height: 1.15;
+  padding: 1.05em 1.9em;
+  border-radius: 999px;
+  background: var(--lc-green);
+  color: #fff;
+  text-decoration: none;
+  text-align: center;
+  border: 0;
+  cursor: pointer;
+  box-shadow:
+    0 12px 32px -12px rgb(0 156 59 / 0.55),
+    inset 0 -3px 0 rgb(0 0 0 / 0.16);
+  transition:
+    transform 0.18s var(--ease-out),
+    box-shadow 0.25s var(--ease-out),
+    background-color 0.2s var(--ease-out);
+}
+
+.lc-btn:hover {
+  transform: translateY(-2px);
+  background: var(--lc-green-deep);
+  box-shadow:
+    0 18px 40px -14px rgb(0 156 59 / 0.6),
+    inset 0 -3px 0 rgb(0 0 0 / 0.16);
+}
+
+.lc-btn:active {
+  transform: translateY(0) scale(0.99);
+}
+
+.lc-btn:focus-visible {
+  outline: 3px solid var(--lc-blue);
+  outline-offset: 3px;
+}
+
+.lc-btn .btn-arrow {
+  flex: none;
+  transition: transform 0.18s var(--ease-out);
+}
+
+.lc-btn:hover .btn-arrow {
+  transform: translateX(3px);
+}
+
+/* ---------- Link/botão secundário ---------- */
+.lc-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  color: var(--lc-blue);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  background: none;
+  border: 0;
+  padding: 0.6rem 0.2rem;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.lc-btn-ghost:hover {
+  color: var(--lc-blue-deep);
+}
+
+/* ---------- Marcos (dots) da linha — criados via JS, por isso GLOBAIS
+   (CSS escopado do Astro não alcança nós criados em runtime) ---------- */
+.lc-line-dot {
+  position: absolute;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #d5dae6;
+  transform: translate(-50%, -50%);
+  transition:
+    background-color 0.2s var(--ease-out),
+    box-shadow 0.2s var(--ease-out);
+}
+
+.lc-line-dot[data-lit] {
+  background: var(--lc-yellow);
+  box-shadow: 0 0 0 3px rgb(255 223 0 / 0.3);
+}
+
+/* Movimento reduzido ou sem JS: marcos já acesos */
+@media (prefers-reduced-motion: reduce) {
+  .lc-line-dot {
+    background: var(--lc-yellow);
+    box-shadow: 0 0 0 3px rgb(255 223 0 / 0.3);
+  }
+}
+
+html:not(.js) .lc-line-dot {
+  background: var(--lc-yellow);
+}
+
+/* ---------- Marcos (dots) da linha dentro das seções ---------- */
+.lc-milestone {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--lc-muted);
+}
+
+.lc-milestone::before {
+  content: '';
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: var(--lc-yellow);
+  box-shadow: 0 0 0 3px rgb(255 223 0 / 0.28);
+  flex: none;
+}
+
+/* ---------- Tipografia de capítulo ---------- */
+.lc-h2 {
+  font-size: var(--text-h2-sm);
+  color: var(--lc-blue);
+  max-width: 22ch;
+}
+
+.lc-lead {
+  font-size: var(--text-lg);
+  color: var(--lc-muted);
+  max-width: 58ch;
+}

@@ -1,0 +1,82 @@
+---
+/**
+ * Cabeçalho da campanha (seção 7.1 do handoff): marca, dois links,
+ * canal de ajuda. Sem menu hambúrguer. CTA principal NÃO fica aqui —
+ * só depois que a função dele estiver clara (jornada).
+ */
+import Logo from '../Logo.astro';
+import { APP_URL } from '../../config';
+---
+
+<header class="lc-header">
+  <div class="container lc-header-in">
+    <Logo variant="dark" />
+    <nav class="lc-nav" aria-label="Seções da página">
+      <a href="#como-funciona">Como funciona</a>
+      <a href="#verifique">Verifique antes de decidir</a>
+      <a class="lc-nav-help" href={APP_URL} data-cta="header-atendimento">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path
+            d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H9l-5 4.5V5.5Z"
+            stroke="currentColor"
+            stroke-width="1.9"
+            stroke-linejoin="round"></path>
+        </svg>
+        Atendimento
+      </a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .lc-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgb(255 255 255 / 0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--lc-line-soft);
+  }
+
+  .lc-header-in {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 0.7rem;
+  }
+
+  .lc-nav {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.9rem, 2.5vw, 1.8rem);
+  }
+
+  .lc-nav a {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--lc-blue);
+    text-decoration: none;
+    padding: 0.45rem 0.1rem;
+  }
+
+  .lc-nav a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .lc-nav-help {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--lc-green-deep) !important;
+  }
+
+  /* mobile: cabeçalho não ocupa mais do que o necessário —
+     os dois links de seção saem, ajuda permanece identificável */
+  @media (max-width: 640px) {
+    .lc-nav a:not(.lc-nav-help) {
+      display: none;
+    }
+  }
+</style>

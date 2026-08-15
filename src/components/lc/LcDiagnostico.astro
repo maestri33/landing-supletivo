@@ -1,0 +1,482 @@
+---
+/**
+ * Diagnóstico (seção 7.3 do handoff) + Resultado preliminar (7.4).
+ * Um cartão por pergunta, indicador "1 de 4", voltar com respostas
+ * persistidas (localStorage), saída para atendimento humano sempre visível.
+ * Sem JS: fallback honesto com link direto (o conteúdo nunca fica preso
+ * atrás de interação — regra de motion do handoff).
+ */
+import { DIAG_QUESTIONS } from '../../data/linha-continua';
+import { APP_URL } from '../../config';
+
+const [q1, q2, q3, q4] = DIAG_QUESTIONS;
+---
+
+<section
+  id="diagnostico"
+  class="lc-diag section"
+  aria-labelledby="lc-diag-title"
+  data-lc-section="diagnostico"
+>
+  <div class="container narrow">
+    <p class="lc-milestone" data-reveal>2 · Diagnóstico</p>
+    <h2 id="lc-diag-title" class="lc-h2" data-reveal>Quatro perguntas para achar o seu caminho</h2>
+    <p class="lc-lead" data-reveal style="--d: 1">
+      Uma pergunta por vez, sem cadastro e sem dado pessoal. Nenhuma resposta está errada — elas
+      só ajudam a desenhar o caminho.
+    </p>
+
+    <!-- Fallback sem JS -->
+    <noscript>
+      <p class="lc-diag-noscript">
+        O diagnóstico interativo precisa de JavaScript. Você pode ir direto para a matrícula ou
+        falar com o atendimento — o caminho é confirmado da mesma forma.
+      </p>
+    </noscript>
+
+    <div class="lc-diag-app" data-diag hidden>
+      <!-- indicador de progresso -->
+      <div class="lc-diag-top">
+        <p class="lc-diag-step" aria-hidden="true">
+          Pergunta <b data-diag-step-now>1</b> de 4
+        </p>
+        <div
+          class="lc-diag-bar"
+          role="progressbar"
+          aria-label="Progresso do diagnóstico"
+          aria-valuemin="0"
+          aria-valuemax="4"
+          aria-valuenow="0"
+          data-diag-bar
+        >
+          <span data-diag-bar-fill></span>
+        </div>
+      </div>
+
+      <!-- cartões (um visível por vez; o script controla) -->
+      <div class="lc-diag-cards" data-diag-cards>
+        <fieldset class="lc-diag-card" data-diag-card="etapa" hidden>
+          <legend>{q1.title}</legend>
+          <div class="lc-diag-opts">
+            {q1.options.map((o) => (
+              <button type="button" class="lc-opt" data-opt data-q="etapa" data-key={o.key}>
+                {o.label}
+              </button>
+            ))}
+          </div>
+        </fieldset>
+
+        <fieldset class="lc-diag-card" data-diag-card="idade" hidden>
+          <legend>{q2.title}</legend>
+          <div class="lc-diag-opts">
+            {q2.options.map((o) => (
+              <button type="button" class="lc-opt" data-opt data-q="idade" data-key={o.key}>
+                {o.label}
+              </button>
+            ))}
+          </div>
+        </fieldset>
+
+        <fieldset class="lc-diag-card" data-diag-card="estado" hidden>
+          <legend>{q3.title}</legend>
+          <label class="lc-diag-select-label" for="lc-uf">
+            Escolha seu estado
+            <select id="lc-uf" class="lc-diag-select" data-diag-uf autocomplete="address-level1">
+              <option value="" selected>Selecionar…</option>
+              {q3.options.map((o) => <option value={o.key}>{o.label}</option>)}
+            </select>
+          </label>
+          <p class="lc-diag-error" data-diag-error="estado" role="alert" hidden>
+            Escolha uma opção para continuar (pode ser “Prefiro não informar”).
+          </p>
+          <button type="button" class="lc-btn lc-diag-next" data-diag-next="estado">
+            Continuar
+          </button>
+        </fieldset>
+
+        <fieldset class="lc-diag-card" data-diag-card="objetivo" hidden>
+          <legend>{q4.title}</legend>
+          <div class="lc-diag-opts">
+            {q4.options.map((o) => (
+              <button type="button" class="lc-opt" data-opt data-q="objetivo" data-key={o.key}>
+                {o.label}
+              </button>
+            ))}
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="lc-diag-foot">
+        <button type="button" class="lc-btn-ghost" data-diag-back hidden>
+          ← Voltar
+        </button>
+        <a class="lc-diag-human" href={APP_URL} data-cta="diag-atendimento">
+          Prefiro falar com uma pessoa
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 · Resultado preliminar (seção 7.4) -->
+<section
+  id="resultado"
+  class="lc-result section"
+  aria-labelledby="lc-result-title"
+  data-lc-section="resultado"
+  hidden
+>
+  <div class="container narrow">
+    <p class="lc-milestone">3 · Resultado</p>
+    <!-- aria-live anuncia SÓ título + resumo, sem reler a página -->
+    <div class="sr-only" aria-live="polite" data-result-live></div>
+
+    <div data-result-body>
+      <h2 id="lc-result-title" class="lc-h2">Seu próximo passo pode começar por aqui.</h2>
+      <p class="lc-result-disclaimer">
+        Este é um direcionamento inicial. Documentos, regras e disponibilidade serão confirmados
+        antes da matrícula.
+      </p>
+
+      <div class="lc-result-card">
+        <p class="lc-result-path-label">Caminho possível</p>
+        <p class="lc-result-path" data-result-path></p>
+        <p class="lc-result-why" data-result-why></p>
+
+        <h3>O que já pode ser explicado</h3>
+        <ul class="lc-result-list lc-result-list--known" data-result-known></ul>
+
+        <h3>O que ainda precisa ser confirmado</h3>
+        <ul class="lc-result-list lc-result-list--pending" data-result-pending></ul>
+
+        <details class="lc-result-summary">
+          <summary>Suas respostas</summary>
+          <ul data-result-answers></ul>
+        </details>
+      </div>
+
+      <div class="lc-result-actions">
+        <a class="lc-btn" href="#como-funciona" data-cta="resultado-como-funciona">
+          Ver como funciona
+          <svg class="btn-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              d="M12 5v14m-6-6 6 6 6-6"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </a>
+        <button type="button" class="lc-btn-ghost" data-result-redo>
+          Refazer o diagnóstico
+        </button>
+      </div>
+    </div>
+
+    <!-- estado de erro (seção 10 do handoff): recuperação + atendimento -->
+    <div data-result-error hidden>
+      <h2 id="lc-result-err-title" class="lc-h2">Não conseguimos montar seu direcionamento agora.</h2>
+      <p class="lc-lead">
+        Você pode tentar novamente — suas respostas foram preservadas — ou falar com o atendimento,
+        que confirma o caminho com você.
+      </p>
+      <div class="lc-result-actions">
+        <button type="button" class="lc-btn" data-result-retry>Tentar novamente</button>
+        <a class="lc-btn-ghost" href={APP_URL} data-cta="resultado-erro-atendimento">
+          Falar com atendimento
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .lc-diag {
+    background: var(--lc-paper-soft);
+  }
+
+  .lc-diag .lc-lead {
+    margin-top: 1.2rem;
+  }
+
+  .lc-diag-noscript {
+    margin-top: 1.5rem;
+    background: #fff;
+    border: 1px solid var(--lc-line-soft);
+    border-radius: var(--radius);
+    padding: 1.2rem 1.4rem;
+  }
+
+  .lc-diag-app {
+    margin-top: 2.2rem;
+  }
+
+  /* ---------- progresso ---------- */
+  .lc-diag-top {
+    margin-bottom: 1.1rem;
+  }
+
+  .lc-diag-step {
+    font-size: 0.9rem;
+    color: var(--lc-muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .lc-diag-step b {
+    color: var(--lc-blue);
+  }
+
+  .lc-diag-bar {
+    height: 6px;
+    border-radius: 999px;
+    background: var(--lc-line-soft);
+    overflow: hidden;
+  }
+
+  .lc-diag-bar span {
+    display: block;
+    height: 100%;
+    width: 0;
+    border-radius: inherit;
+    background: var(--lc-yellow);
+    transition: width 0.24s var(--ease-out);
+  }
+
+  /* ---------- cartões ---------- */
+  .lc-diag-card {
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+
+  .lc-diag-card legend {
+    font-family: var(--font-display);
+    font-size: clamp(1.3rem, 1.1rem + 1vw, 1.7rem);
+    line-height: 1.15;
+    color: var(--lc-blue);
+    margin-bottom: 1.3rem;
+    padding: 0;
+  }
+
+  /* troca de cartão: 180–240ms transform+opacity (motion spec) */
+  @media (prefers-reduced-motion: no-preference) {
+    .lc-diag-card[data-anim='in'] {
+      animation: lc-card-in 0.22s var(--ease-out);
+    }
+  }
+
+  @keyframes lc-card-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .lc-diag-opts {
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .lc-opt {
+    touch-action: manipulation;
+    text-align: left;
+    font: inherit;
+    font-weight: 700;
+    color: var(--lc-ink);
+    background: #fff;
+    border: 1.5px solid var(--lc-line-soft);
+    border-radius: 14px;
+    padding: 1rem 1.2rem;
+    cursor: pointer;
+    transition:
+      border-color 0.18s var(--ease-out),
+      background-color 0.18s var(--ease-out),
+      transform 0.18s var(--ease-out);
+  }
+
+  .lc-opt:hover {
+    border-color: var(--lc-blue);
+    transform: translateY(-1px);
+  }
+
+  .lc-opt:focus-visible {
+    outline: 3px solid var(--lc-blue);
+    outline-offset: 2px;
+  }
+
+  .lc-opt[aria-pressed='true'] {
+    border-color: var(--lc-green);
+    background: rgb(0 156 59 / 0.07);
+    box-shadow: inset 0 0 0 1px var(--lc-green);
+  }
+
+  /* ---------- select de UF ---------- */
+  .lc-diag-select-label {
+    display: block;
+    font-weight: 700;
+    color: var(--lc-muted);
+    font-size: 0.95rem;
+  }
+
+  .lc-diag-select {
+    display: block;
+    margin-top: 0.5rem;
+    width: min(100%, 22rem);
+    font: inherit;
+    color: var(--lc-ink);
+    background: #fff;
+    border: 1.5px solid var(--lc-line-soft);
+    border-radius: 14px;
+    padding: 0.95rem 1.1rem;
+  }
+
+  .lc-diag-select:focus-visible {
+    outline: 3px solid var(--lc-blue);
+    outline-offset: 2px;
+    border-color: var(--lc-blue);
+  }
+
+  .lc-diag-error {
+    margin-top: 0.8rem;
+    color: var(--lc-error);
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+
+  .lc-diag-next {
+    margin-top: 1.4rem;
+  }
+
+  /* ---------- rodapé do stepper ---------- */
+  .lc-diag-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1.6rem;
+  }
+
+  .lc-diag-human {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--lc-green-deep);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    padding: 0.6rem 0.2rem;
+  }
+
+  /* ---------- resultado ---------- */
+  .lc-result {
+    background: var(--lc-paper);
+  }
+
+  .lc-result-disclaimer {
+    margin-top: 1rem;
+    color: var(--lc-muted);
+    max-width: 56ch;
+  }
+
+  .lc-result-card {
+    margin-top: 1.8rem;
+    background: var(--lc-paper-soft);
+    border: 1px solid var(--lc-line-soft);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.4rem, 1rem + 2vw, 2.2rem);
+  }
+
+  .lc-result-path-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--lc-muted);
+  }
+
+  .lc-result-path {
+    margin-top: 0.4rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2.1rem);
+    color: var(--lc-green-deep);
+  }
+
+  .lc-result-why {
+    margin-top: 0.7rem;
+    color: var(--lc-muted);
+  }
+
+  .lc-result-card h3 {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 1.02rem;
+    color: var(--lc-blue);
+    margin-top: 1.6rem;
+  }
+
+  .lc-result-list {
+    margin-top: 0.7rem;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.55rem;
+  }
+
+  .lc-result-list li {
+    position: relative;
+    padding-left: 1.6rem;
+  }
+
+  .lc-result-list li::before {
+    position: absolute;
+    left: 0;
+    top: 0.1rem;
+    font-weight: 700;
+  }
+
+  /* verde = confirmado; azul = informação estrutural; amarelo só no fio */
+  .lc-result-list--known li::before {
+    content: '✓';
+    color: var(--lc-green);
+  }
+
+  .lc-result-list--pending li::before {
+    content: '→';
+    color: var(--lc-blue);
+  }
+
+  .lc-result-summary {
+    margin-top: 1.6rem;
+    border-top: 1px solid var(--lc-line-soft);
+    padding-top: 1rem;
+  }
+
+  .lc-result-summary summary {
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--lc-blue);
+    padding: 0.4rem 0;
+  }
+
+  .lc-result-summary ul {
+    margin-top: 0.6rem;
+    padding-left: 1.2rem;
+    color: var(--lc-muted);
+  }
+
+  .lc-result-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem 1.4rem;
+    margin-top: 1.8rem;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .lc-result[data-entering] .lc-result-card {
+      animation: lc-card-in 0.4s var(--ease-out);
+    }
+  }
+</style>

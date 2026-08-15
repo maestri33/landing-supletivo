@@ -1,0 +1,168 @@
+---
+/**
+ * Hero (seção 7.2 do handoff): público, benefício e próxima ação em 5s.
+ * Composição tipográfica forte (sem foto de banco de imagem).
+ * A linha amarela global (LcLinha) passa pelo quadro; aqui, o motivo da
+ * interrupção aparece no cartão "onde você parou → onde continua".
+ * CTA âncora para o diagnóstico — não vai ao app antes da hora.
+ */
+---
+
+<section id="hero" class="lc-hero section" aria-labelledby="lc-hero-title" data-lc-section="hero">
+  <div class="container lc-hero-in">
+    <div class="lc-hero-copy">
+      <p class="kicker" style="color: var(--lc-green-deep)">EJA · Ensino Fundamental e Médio</p>
+      <h1 id="lc-hero-title" data-reveal>
+        Você não precisa voltar ao começo. <span>Só continuar de onde parou.</span>
+      </h1>
+      <p class="lc-lead" data-reveal style="--d: 1">
+        Descubra um caminho possível para concluir seus estudos, com orientação clara e no
+        ritmo da sua rotina.
+      </p>
+      <div class="lc-hero-actions" data-reveal style="--d: 2">
+        <a class="lc-btn" href="#diagnostico" data-cta="hero-descobrir">
+          Descobrir meu caminho
+          <svg class="btn-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              d="M12 5v14m-6-6 6 6 6-6"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </a>
+        <a class="lc-btn-ghost" href="#verifique">Como verificar antes de decidir</a>
+      </div>
+      <p class="microcopy" style="color: var(--lc-muted); --d: 3" data-reveal>
+        Leva cerca de 1 minuto. Primeiro você vê o caminho; seus dados vêm depois.
+      </p>
+    </div>
+
+    <!-- Motivo da linha interrompida (decorativo; a narrativa não depende dele) -->
+    <div class="lc-hero-art" aria-hidden="true">
+      <div class="lc-hero-card">
+        <p class="lc-hero-card-label">onde você parou</p>
+        <svg viewBox="0 0 260 150" fill="none" role="presentation">
+          <!-- passado: traço cinza que termina interrompido -->
+          <path
+            d="M14 44h96"
+            stroke="#c6ccda"
+            stroke-width="5"
+            stroke-linecap="round"
+            stroke-dasharray="14 12"></path>
+          <circle cx="14" cy="44" r="7" fill="#c6ccda"></circle>
+          <!-- continuação: linha amarela retoma e sai do quadro -->
+          <path
+            class="lc-hero-line"
+            d="M122 44 C 165 44, 160 100, 205 100 L 246 100"
+            stroke="var(--lc-yellow)"
+            stroke-width="5"
+            stroke-linecap="round"></path>
+          <circle cx="246" cy="100" r="7" fill="var(--lc-green)"></circle>
+        </svg>
+        <p class="lc-hero-card-label lc-hero-card-label--end">onde continua</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .lc-hero {
+    background: var(--lc-paper);
+    padding-top: clamp(3.5rem, 3rem + 3vw, 6rem);
+    overflow: clip;
+  }
+
+  .lc-hero-in {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+
+  .lc-hero .kicker {
+    margin-bottom: 1.3rem;
+  }
+
+  #lc-hero-title {
+    font-size: clamp(2.1rem, 1.3rem + 4vw, 4rem);
+    color: var(--lc-blue);
+    max-width: 18ch;
+  }
+
+  #lc-hero-title span {
+    /* segundo verso com a mesma força, sem depender de cor */
+    display: block;
+  }
+
+  .lc-hero .lc-lead {
+    margin-top: 1.4rem;
+  }
+
+  .lc-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem 1.4rem;
+    margin-top: 2rem;
+  }
+
+  .lc-hero-art {
+    display: flex;
+    justify-content: center;
+  }
+
+  .lc-hero-card {
+    width: min(100%, 22rem);
+    background: var(--lc-paper-soft);
+    border: 1px solid var(--lc-line-soft);
+    border-radius: var(--radius-lg);
+    padding: 1.6rem 1.4rem 1.3rem;
+  }
+
+  .lc-hero-card-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--lc-muted);
+  }
+
+  .lc-hero-card-label--end {
+    text-align: right;
+    color: var(--lc-green-deep);
+  }
+
+  /* a linha amarela se desenha depois que a copy já está legível */
+  @media (prefers-reduced-motion: no-preference) {
+    .js .lc-hero-line {
+      stroke-dasharray: 210;
+      stroke-dashoffset: 210;
+      animation: lc-hero-draw 1.1s var(--ease-out) 0.9s forwards;
+    }
+  }
+
+  @keyframes lc-hero-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @media (max-width: 860px) {
+    .lc-hero-in {
+      grid-template-columns: 1fr;
+    }
+
+    /* mobile-first: copy + CTA antes da dobra; o cartão vai para depois */
+    .lc-hero-art {
+      order: 2;
+    }
+  }
+
+  /* 360px: garante headline inteira + CTA no primeiro quadro */
+  @media (max-width: 400px) {
+    #lc-hero-title {
+      font-size: 2.05rem;
+    }
+  }
+</style>

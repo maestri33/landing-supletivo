@@ -1,0 +1,122 @@
+---
+/**
+ * CTA final (seção 7.11 do handoff): fechar sem surpresa, com a linha
+ * "entrando" no CTA. O usuário sabe para onde vai (app.supletivo.net.br).
+ */
+import { APP_URL } from '../../config';
+import { pixBRL, cardLine } from '../../data/price';
+
+const appHost = new URL(APP_URL).host;
+---
+
+<section id="comecar" class="lc-final section on-dark" aria-labelledby="lc-final-title" data-lc-section="comecar">
+  <div class="container narrow lc-final-in">
+    <h2 id="lc-final-title" data-reveal>
+      O próximo capítulo não começa do zero.
+    </h2>
+    <p class="lc-final-lead" data-reveal style="--d: 1">
+      {pixBRL} no Pix ou {cardLine} no cartão. Você confirma tudo — preço, condição e documentos —
+      dentro do app antes de pagar.
+    </p>
+
+    <div class="lc-final-cta-wrap" data-reveal style="--d: 2">
+      {/* a linha amarela entra visualmente no CTA (metáfora de continuidade) */}
+      <svg class="lc-final-line" viewBox="0 0 120 60" fill="none" aria-hidden="true">
+        <path
+          d="M4 30h86"
+          stroke="var(--lc-yellow)"
+          stroke-width="4"
+          stroke-linecap="round"
+          stroke-dasharray="12 10"></path>
+        <path d="M96 22l14 8-14 8" fill="var(--lc-yellow)"></path>
+      </svg>
+      <a class="lc-btn lc-btn-xl" href={APP_URL} data-cta="final-comecar">
+        Começar minha matrícula
+        <svg class="btn-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path
+            d="M5 12h14m-6-6 6 6-6 6"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
+      </a>
+    </div>
+
+    <p class="lc-final-dest" data-reveal style="--d: 3">
+      Ao continuar, você segue para <strong>{appHost}</strong>, o ambiente oficial de matrícula.
+    </p>
+    <a class="lc-final-alt" href={APP_URL} data-cta="final-atendimento" data-reveal style="--d: 4">
+      Prefere conversar antes? Falar com atendimento
+    </a>
+  </div>
+</section>
+
+<style>
+  .lc-final {
+    background: var(--lc-blue);
+    color: #fff;
+    text-align: center;
+    overflow: clip;
+  }
+
+  .lc-final h2 {
+    color: #fff;
+    font-size: var(--text-h2-sm);
+    max-width: 24ch;
+    margin-inline: auto;
+  }
+
+  .lc-final-lead {
+    margin: 1.3rem auto 0;
+    color: #cdd6ef;
+    max-width: 52ch;
+    font-size: var(--text-lg);
+  }
+
+  .lc-final-cta-wrap {
+    position: relative;
+    display: inline-block;
+    margin-top: 2.4rem;
+  }
+
+  .lc-final-line {
+    position: absolute;
+    right: calc(100% + 0.8rem);
+    top: 50%;
+    width: clamp(3rem, 10vw, 7.5rem);
+    height: auto;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  @media (max-width: 640px) {
+    .lc-final-line {
+      display: none;
+    }
+  }
+
+  .lc-final-dest {
+    margin-top: 1.4rem;
+    font-size: 0.95rem;
+    color: #cdd6ef;
+  }
+
+  .lc-final-dest strong {
+    color: var(--lc-yellow);
+  }
+
+  .lc-final-alt {
+    display: inline-block;
+    margin-top: 1.1rem;
+    color: #fff;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    padding: 0.6rem 0.2rem;
+  }
+
+  .lc-final .lc-btn:focus-visible {
+    outline-color: var(--lc-yellow);
+  }
+</style>

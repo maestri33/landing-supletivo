@@ -1,0 +1,126 @@
+---
+/**
+ * FAQ decisivo (seção 7.10 do handoff): resposta curta antes do detalhe,
+ * <details> nativo com teclado, estado exposto à tecnologia assistiva.
+ * Os mesmos dados alimentam o JSON-LD da página.
+ */
+import { LC_FAQ } from '../../data/linha-continua';
+---
+
+<section id="faq" class="lc-faq section" aria-labelledby="lc-faq-title" data-lc-section="faq">
+  <div class="container narrow">
+    <p class="lc-milestone" data-reveal>8 · Dúvidas</p>
+    <h2 id="lc-faq-title" class="lc-h2" data-reveal>Perguntas de quem está decidindo</h2>
+
+    <div class="lc-faq-list">
+      {
+        LC_FAQ.map((item, i) => (
+          <details class="lc-faq-item" id={`faq-${item.id}`} data-faq-item={item.id} data-reveal style={`--d: ${Math.min(i, 3)}`}>
+            <summary>
+              <h3>{item.q}</h3>
+              <svg class="chev" viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
+                <path
+                  d="M6 9l6 6 6-6"
+                  stroke="currentColor"
+                  stroke-width="2.4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </summary>
+            {/* resposta curta antes do detalhe (aceite 7.10) */}
+            <p class="lc-faq-short">
+              <strong>{item.short}</strong>
+            </p>
+            <p class="lc-faq-detail">{item.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .lc-faq {
+    background: var(--lc-paper);
+  }
+
+  .lc-faq-list {
+    margin-top: 2rem;
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .lc-faq-item {
+    background: var(--lc-paper-soft);
+    border: 1px solid var(--lc-line-soft);
+    border-radius: 14px;
+  }
+
+  .lc-faq-item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.05rem 1.25rem;
+    cursor: pointer;
+    list-style: none;
+    touch-action: manipulation;
+    border-radius: 14px;
+  }
+
+  .lc-faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .lc-faq-item summary:focus-visible {
+    outline: 3px solid var(--lc-blue);
+    outline-offset: -3px;
+  }
+
+  .lc-faq-item summary h3 {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 1.02rem;
+    line-height: 1.4;
+    color: var(--lc-blue);
+  }
+
+  .lc-faq-item .chev {
+    flex: none;
+    color: var(--lc-green-deep);
+    transition: transform 0.25s var(--ease-out);
+  }
+
+  .lc-faq-item[open] .chev {
+    transform: rotate(180deg);
+  }
+
+  .lc-faq-short {
+    padding: 0 1.25rem;
+    color: var(--lc-ink);
+  }
+
+  .lc-faq-detail {
+    padding: 0.5rem 1.25rem 1.2rem;
+    color: var(--lc-muted);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .lc-faq-item[open] .lc-faq-short,
+    .lc-faq-item[open] .lc-faq-detail {
+      animation: lc-faq-in 0.25s var(--ease-out);
+    }
+  }
+
+  @keyframes lc-faq-in {
+    from {
+      opacity: 0;
+      translate: 0 -4px;
+    }
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+</style>
