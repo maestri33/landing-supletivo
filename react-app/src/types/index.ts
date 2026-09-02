@@ -33,4 +33,12 @@ export interface LeadSubmission {
   phone: string;
   course: 'medio' | 'fundamental' | 'ambos';
   created_at?: string;
+  ref?: string;
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  utm_term?: string;
+  utm_content?: string;
+  gclid?: string;
+  fbclid?: string;
 }

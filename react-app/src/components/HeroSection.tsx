@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { HERO_CARDS } from '../data/content';
+import { buildAppUrl } from '../lib/attribution';
 
 interface HeroSectionProps {
   onOpenLeadModal: (course?: 'medio' | 'fundamental' | 'ambos') => void;
@@ -9,34 +10,22 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenLeadModal }) => 
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  useEffect(() => {
-    document.body.style.overflow = menuOpen ? 'hidden' : 'auto';
-  }, [menuOpen]);
-
-  useEffect(() => {
-    const onResize = () => {
-      if (window.innerWidth > 768) setMenuOpen(false);
-    };
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
-  }, []);
-
-  const closeMenu = () => setMenuOpen(false);
-
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const query = searchQuery.toLowerCase();
-    if (query.includes('fund')) {
+    const q = searchQuery.toLowerCase();
+    if (q.includes('fund') || q.includes('elementar')) {
       onOpenLeadModal('fundamental');
-    } else if (query.includes('méd') || query.includes('med')) {
+    } else if (q.includes('méd') || q.includes('med')) {
       onOpenLeadModal('medio');
     } else {
       onOpenLeadModal('ambos');
     }
   };
 
+  const closeMenu = () => setMenuOpen(false);
+
   return (
-    <div className="c6-hero" id="hero">
+    <div className="c6-hero-wrapper">
       <nav className="c6-nav" aria-label="Navegação Principal">
         <div className="c6-logo">
           Supletivo<span>Brasil</span>.
@@ -45,19 +34,28 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenLeadModal }) => 
         <div className="c6-menu">
           <a href="#como-funciona">Como Funciona</a>
           <a href="#elegibilidade">Requisitos</a>
-          <a href="#depoimentos">Histórias Reais</a>
-          <a href="#valores">Planos & Valores</a>
+          <a href="#grade-curricular">Grade Curricular</a>
+          <a href="#calculadora-salarial">Calculadora de Renda</a>
+          <a href="#validacao-oficial">Diário Oficial</a>
+          <a href="#valores">Investimento</a>
           <a href="#duvidas">Dúvidas</a>
         </div>
 
         <div className="c6-actions">
-          <a href="https://app.supletivo.net.br/login" className="c6-login" target="_blank" rel="noreferrer">
+          <a 
+            href={buildAppUrl('/login')} 
+            className="c6-login" 
+            target="_blank" 
+            rel="noreferrer"
+            data-cta="login"
+          >
             Área do Aluno
           </a>
           <button
             type="button"
             onClick={() => onOpenLeadModal('ambos')}
             className="c6-trial cursor-pointer border-none"
+            data-cta="matricula-top"
           >
             Matricule-se Já
           </button>
@@ -77,13 +75,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenLeadModal }) => 
         <div className={`c6-mobile-nav ${menuOpen ? 'open' : ''}`}>
           <a href="#como-funciona" onClick={closeMenu}>Como Funciona</a>
           <a href="#elegibilidade" onClick={closeMenu}>Requisitos</a>
-          <a href="#depoimentos" onClick={closeMenu}>Histórias Reais</a>
-          <a href="#valores" onClick={closeMenu}>Planos & Valores</a>
+          <a href="#grade-curricular" onClick={closeMenu}>Grade Curricular</a>
+          <a href="#calculadora-salarial" onClick={closeMenu}>Calculadora de Renda</a>
+          <a href="#validacao-oficial" onClick={closeMenu}>Diário Oficial</a>
+          <a href="#valores" onClick={closeMenu}>Investimento</a>
           <a href="#duvidas" onClick={closeMenu}>Dúvidas Frequentes</a>
           <a
-            href="https://app.supletivo.net.br/login"
+            href={buildAppUrl('/login')}
             onClick={closeMenu}
             style={{ marginTop: 15, color: 'var(--accent)' }}
+            data-cta="login-mobile"
           >
             Área do Aluno
           </a>
@@ -94,6 +95,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenLeadModal }) => 
               onOpenLeadModal('ambos');
             }}
             className="c6-trial w-full mt-2 cursor-pointer border-none text-center"
+            data-cta="matricula-mobile"
           >
             Matricule-se Já
           </button>
@@ -114,7 +116,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenLeadModal }) => 
           </h1>
 
           <p className="text-slate-600 text-lg md:text-xl font-normal max-w-lg mb-8 leading-relaxed">
-            Conclua seu <strong>Ensino Fundamental ou Médio</strong> 100% online no seu próprio ritmo, com publicação oficial em Diário Oficial.
+            Conclua seu <strong>Ensino Fundamental ou Médio</strong> 100% online no seu próprio ritmo, com publicação nominal no Diário Oficial.
           </p>
 
           <div className="c6-search-container">
@@ -126,7 +128,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenLeadModal }) => 
                 onChange={(e) => setSearchQuery(e.target.value)}
                 aria-label="Buscar curso pretendido"
               />
-              <button type="submit">Iniciar Matrícula</button>
+              <button type="submit" data-cta="search-submit">Iniciar Matrícula</button>
             </form>
           </div>
         </div>
@@ -140,6 +142,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenLeadModal }) => 
               tabIndex={0}
               role="button"
               aria-label={`Ver informações sobre ${card.label}`}
+              data-cta={`hero-card-${i}`}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   onOpenLeadModal(i === 1 ? 'fundamental' : 'medio');

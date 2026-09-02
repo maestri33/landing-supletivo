@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, CheckCircle2, Loader2, Send } from 'lucide-react';
 import { submitLead } from '../lib/supabase';
+import { buildAppUrl } from '../lib/attribution';
 import type { LeadSubmission } from '../types';
 
 interface LeadModalProps {
@@ -37,11 +38,15 @@ export const LeadModal: React.FC<LeadModalProps> = ({
     if (res.success) {
       setSubmitted(true);
       setTimeout(() => {
-        // redirect to app onboarding after brief confirmation
-        window.location.href = `https://app.supletivo.net.br?curso=${formData.course}&nome=${encodeURIComponent(
-          formData.name
-        )}`;
-      }, 1800);
+        // Redireciona para o portal seguro repassando curso, dados e parâmetros de afiliados
+        const targetUrl = buildAppUrl('/', {
+          curso: formData.course,
+          nome: formData.name,
+          email: formData.email,
+          whatsapp: formData.phone,
+        });
+        window.location.href = targetUrl;
+      }, 1500);
     } else {
       setErrorMsg(res.error || 'Erro ao enviar. Tente novamente.');
     }
@@ -66,7 +71,7 @@ export const LeadModal: React.FC<LeadModalProps> = ({
             </div>
             <h3 className="text-2xl font-bold text-slate-900 mb-2">Matrícula Pré-Aprovada!</h3>
             <p className="text-slate-600 mb-4">
-              Recebemos seus dados com sucesso. Redirecionando você para o ambiente seguro de matrícula...
+              Recebemos seus dados com sucesso. Redirecionando você para o ambiente seguro do aluno em <strong>app.supletivo.net.br</strong>...
             </p>
             <div className="flex justify-center items-center gap-2 text-emerald-700 font-semibold text-sm">
               <Loader2 className="w-4 h-4 animate-spin" /> Carregando portal...
@@ -152,6 +157,7 @@ export const LeadModal: React.FC<LeadModalProps> = ({
                 type="submit"
                 disabled={loading}
                 className="w-full bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white font-bold py-4 rounded-xl shadow-lg shadow-orange-500/30 transition-all flex items-center justify-center gap-2 cursor-pointer mt-2"
+                data-cta="submit-lead"
               >
                 {loading ? (
                   <>

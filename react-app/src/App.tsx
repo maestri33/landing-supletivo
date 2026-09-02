@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { HeroSection } from './components/HeroSection';
 import { BenefitsSection } from './components/BenefitsSection';
 import { CurriculumSyllabus } from './components/CurriculumSyllabus';
@@ -12,10 +12,16 @@ import { FaqSection } from './components/FaqSection';
 import { LeadModal } from './components/LeadModal';
 import { WhatsAppFloating } from './components/WhatsAppFloating';
 import { Footer } from './components/Footer';
+import { initAttribution } from './lib/attribution';
 
 export const App: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<'medio' | 'fundamental' | 'ambos'>('ambos');
+
+  useEffect(() => {
+    // Inicializa e persiste parâmetros de afiliados e campanhas na chegada do usuário
+    initAttribution();
+  }, []);
 
   const handleOpenModal = (courseName?: string) => {
     if (courseName === 'fundamental') {
@@ -48,7 +54,7 @@ export const App: React.FC = () => {
       <CurriculumSyllabus />
 
       {/* 5. Validação Nacional & Diário Oficial por Estado */}
-      <OfficialValidation />
+      <OfficialValidation onOpenLeadModal={handleOpenModal} />
 
       {/* 6. Linha do Tempo e Passo a Passo */}
       <StepsJourney onOpenLeadModal={handleOpenModal} />
