@@ -1,0 +1,211 @@
+---
+/**
+ * Página SEO — intenção de busca: "supletivo reconhecido pelo mec" / "supletivo tem validade mec".
+ */
+import ContentPage from '../layouts/ContentPage.astro';
+import CtaButton from '../components/CtaButton.astro';
+import { PRICE, cardLine, pixBRL, fullBRL } from '../data/price';
+
+const title = 'Supletivo Reconhecido pelo MEC: como saber se é válido | Supletivo Brasil';
+const description =
+  `Saiba como funciona a validação oficial do supletivo pelo MEC e Conselhos Estaduais. Entenda a legislação (LDB), publicação em Diário Oficial e segurança.`;
+
+const site = Astro.site!;
+const pageUrl = new URL(Astro.url.pathname, site).href;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${pageUrl}#breadcrumb`,
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Início',
+          item: site.href,
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Supletivo Reconhecido pelo MEC',
+          item: pageUrl,
+        },
+      ],
+    },
+    {
+      '@type': 'Article',
+      '@id': `${pageUrl}#article`,
+      headline: 'Supletivo reconhecido pelo MEC: entenda as regras, a lei e a validade do certificado',
+      description,
+      inLanguage: 'pt-BR',
+      mainEntityOfPage: pageUrl,
+      publisher: {
+        '@type': 'Organization',
+        name: 'Supletivo Brasil',
+        url: site.href,
+      },
+    },
+    {
+      '@type': 'Course',
+      '@id': `${pageUrl}#course`,
+      name: 'Supletivo Online com Certificação Oficial',
+      description,
+      inLanguage: 'pt-BR',
+      educationalLevel: ['Ensino Fundamental', 'Ensino Médio'],
+      educationalCredentialAwarded: [
+        {
+          '@type': 'EducationalOccupationalCredential',
+          name: 'Certificado Oficial de Conclusão da Educação Básica (EJA)',
+          credentialCategory: 'degree',
+          recognizedBy: {
+            '@type': 'Organization',
+            name: 'Ministério da Educação (MEC)',
+          },
+        },
+      ],
+      hasCourseInstance: [
+        {
+          '@type': 'CourseInstance',
+          courseMode: ['online', 'blended'],
+          courseWorkload: 'PT120H',
+          inLanguage: 'pt-BR',
+          offers: {
+            '@type': 'Offer',
+            price: String(PRICE.pixTotal),
+            priceCurrency: 'BRL',
+            availability: 'https://schema.org/InStock',
+            url: pageUrl,
+            category: 'À vista no Pix',
+          },
+        },
+        {
+          '@type': 'CourseInstance',
+          courseMode: ['online', 'blended'],
+          courseWorkload: 'PT120H',
+          inLanguage: 'pt-BR',
+          offers: {
+            '@type': 'Offer',
+            price: String(PRICE.cardTotal),
+            priceCurrency: 'BRL',
+            availability: 'https://schema.org/InStock',
+            url: pageUrl,
+            category: `${PRICE.installments}x no cartão`,
+          },
+        },
+      ],
+      offers: {
+        '@type': 'AggregateOffer',
+        priceCurrency: 'BRL',
+        lowPrice: String(PRICE.pixTotal),
+        highPrice: String(PRICE.cardTotal),
+        offerCount: '2',
+        url: pageUrl,
+      },
+      provider: {
+        '@type': 'Organization',
+        name: 'Supletivo Brasil',
+        url: site.href,
+      },
+    },
+  ],
+};
+---
+
+<ContentPage
+  {title}
+  {description}
+  {schema}
+  ogImage="/og-supletivo-online.png"
+  kicker="Legitimidade e Leis"
+  h1="Supletivo reconhecido pelo MEC: como funciona a validação oficial do diploma"
+>
+  <p>
+    Uma das principais preocupações de quem decide voltar a estudar é a <strong>segurança e a validade oficial do certificado</strong>.
+    Afinal, ninguém quer dedicar tempo e recursos em um curso e descobrir mais tarde que o documento não é aceito em faculdades,
+    concursos ou empregos.
+  </p>
+  <p>
+    Neste guia, explicamos como a legislação brasileira regula o supletivo (EJA), como funciona o reconhecimento e o que você deve verificar para ter total tranquilidade.
+  </p>
+
+  <h2>Como a lei brasileira regula o Supletivo e a EJA?</h2>
+  <p>
+    A Educação de Jovens e Adultos (EJA) é respaldada pela <strong>Lei nº 9.394/1996 (Lei de Diretrizes e Bases da Educação Nacional — LDB)</strong>,
+    especificamente em seus artigos 37 e 38. A lei determina:
+  </p>
+  <ul>
+    <li>Possibilidade de conclusão acelerada para quem não teve acesso na idade escolar comum;</li>
+    <li>Idade mínima de <strong>15 anos</strong> para o Ensino Fundamental e <strong>18 anos</strong> para o Ensino Médio;</li>
+    <li>Validade jurídica idêntica ao diploma obtido no ensino escolar convencional.</li>
+  </ul>
+
+  <h2>O MEC autoriza escolas de supletivo diretamente?</h2>
+  <p>
+    Muitas pessoas buscam por "escolas autorizadas diretamente pelo MEC", mas a estrutura da educação no Brasil divide as competências:
+  </p>
+  <ul>
+    <li>O <strong>MEC (Ministério da Educação)</strong> coordena a política nacional e regulamenta o ensino superior;</li>
+    <li>A <strong>Educação Básica (Fundamental e Médio)</strong> é regulamentada e autorizada pelas <strong>Secretarias Estaduais de Educação (SEED)</strong> e pelos <strong>Conselhos Estaduais de Educação (CEE)</strong> de cada estado, que operam sob as diretrizes do MEC e do Conselho Nacional de Educação (CNE).</li>
+  </ul>
+  <p>
+    Portanto, um supletivo legítimo é aquele cuja certificadora parceira possui autorização no Conselho Estadual de Educação do seu estado federativo, emitindo certificados registrados e homologados no Diário Oficial.
+  </p>
+
+  <h2>Por que a prova final precisa ser presencial?</h2>
+  <p>
+    <strong>Atenção a este ponto crucial:</strong> desconfie de qualquer proposta de "supletivo 100% online sem nenhuma prova presencial".
+    A legislação brasileira exige que os exames finais de aferição da EJA tenham momento presencial supervisionado.
+  </p>
+  <p>
+    No Supletivo Brasil, você faz toda a preparação, estuda as apostilas e tira dúvidas 100% pelo celular.
+    Apenas a <strong>avaliação final é presencial</strong>, realizada em nossos polos de atendimento.
+    É esse procedimento oficial de identificação biométrica e assinatura que garante a homologação legal do seu diploma junto aos órgãos estaduais.
+  </p>
+
+  <h2>Como comprovar que o diploma é verdadeiro?</h2>
+  <p>
+    Após a aprovação na avaliação presencial, o processo de emissão segue todos os ritos formais:
+  </p>
+  <ul>
+    <li>Emissão do histórico escolar e do certificado de conclusão;</li>
+    <li>Publicação da homologação no Diário Oficial do Estado (ou registro no sistema oficial do estado, como GDAE/SISTEC);</li>
+    <li>Autenticação que permite consulta por qualquer faculdade, banca de concurso público ou empregador.</li>
+  </ul>
+
+  <h2>Onde o certificado é aceito?</h2>
+  <p>
+    Por ter amparo legal nacional, o certificado tem validade irrestrita em todos os 26 estados brasileiros e no Distrito Federal:
+  </p>
+  <ul>
+    <li><strong>Ensino Superior:</strong> vestibulares, faculdades públicas e privadas, ProUni, FIES e SiSU;</li>
+    <li><strong>Concursos Públicos:</strong> em todas as esferas (municipal, estadual e federal);</li>
+    <li><strong>Cursos Técnicos:</strong> em qualquer instituição de ensino técnico e profissionalizante;</li>
+    <li><strong>Conselhos de Classe e Carteiras de Habilitação:</strong> exigências do Detran e conselhos profissionais;</li>
+    <li><strong>Promoções Profissionais:</strong> registros em carteira (CLT) e progressão de carreira.</li>
+  </ul>
+
+  <h2>Quanto custa e como começar com segurança?</h2>
+  <p>
+    O investimento promocional atual é de <strong>{cardLine} no cartão</strong> ou
+    <strong>{pixBRL} à vista no Pix</strong> (de {fullBRL}).
+    Além de toda a transparência e legalidade, você tem <strong>7 dias de garantia incondicional</strong>:
+    se por qualquer motivo decidir não continuar, devolvemos 100% do valor pago (art. 49 do Código de Defesa do Consumidor).
+  </p>
+
+  <div class="cta-box">
+    <h2>Inicie seus estudos com garantia de legitimidade</h2>
+    <p>Matricule-se em poucos minutos pelo celular e prepare-se com tranquilidade.</p>
+    <CtaButton position="conteudo" />
+  </div>
+
+  <h2>Conteúdo relacionado</h2>
+  <ul>
+    <li><a href="/supletivo-online/">Supletivo online: como funciona e vantagens</a></li>
+    <li><a href="/supletivo-ensino-fundamental/">Supletivo Ensino Fundamental: idade mínima de 15 anos</a></li>
+    <li><a href="/terminar-ensino-medio/">Como terminar o ensino médio sendo adulto</a></li>
+    <li><a href="/eja-a-distancia/">EJA a distância: guia completo</a></li>
+    <li><a href="/#faq">Perguntas frequentes sobre certificação</a></li>
+  </ul>
+</ContentPage>

@@ -1,0 +1,214 @@
+---
+/**
+ * Seção — Histórias de Sucesso / Depoimentos reais de quem concluiu a EJA.
+ * Prova social humanizada: conquistas de carreira, faculdade e concursos.
+ */
+import { STORIES } from '../data/stories';
+
+function getInitials(name: string): string {
+  const parts = name.trim().split(/\s+/);
+  return parts.slice(0, 2).map((p) => p[0]).join('').toUpperCase();
+}
+---
+
+<section id="depoimentos" class="stories section on-light" aria-labelledby="stories-title" data-section="depoimentos">
+  <div class="container">
+    <div class="stories-header">
+      <p class="kicker stories-kicker" data-reveal>Histórias de Sucesso</p>
+      <h2 id="stories-title" data-reveal>Quem deu a virada com o Supletivo Brasil</h2>
+      <p class="stories-lead" data-reveal style="--d: 1">
+        Veja como a conquista do diploma transformou a vida de quem não desistiu do futuro.
+      </p>
+    </div>
+
+    <div class="stories-grid">
+      {STORIES.map((s, i) => (
+        <article class="story-card" data-reveal style={`--d: ${i + 1}`}>
+          <div class="story-top">
+            <div class="story-stars" role="img" aria-label="Avaliação 5 estrelas">
+              {[...Array(5)].map(() => (
+                <svg viewBox="0 0 24 24" fill="currentColor" class="star-icon" aria-hidden="true">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+              ))}
+            </div>
+            <span class="story-tag">{s.tag}</span>
+          </div>
+
+          <blockquote class="story-quote">
+            <p>"{s.quote}"</p>
+          </blockquote>
+
+          <div class="story-author">
+            <div class="author-avatar" aria-hidden="true">
+              <span>{getInitials(s.name)}</span>
+            </div>
+            <div class="author-info">
+              <h3 class="author-name">
+                {s.name}
+                <svg viewBox="0 0 24 24" fill="none" class="check-icon" role="img" aria-label="Verificado">
+                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </h3>
+              <p class="author-meta">{s.age} anos · {s.city}</p>
+              <p class="author-conquest">{s.conquest}</p>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .stories {
+    background: var(--paper);
+    color: var(--ink);
+    padding-block: clamp(4rem, 8vw, 6.5rem);
+    border-top: 1px solid var(--line-light);
+  }
+
+  .stories-header {
+    text-align: center;
+    max-width: 48ch;
+    margin-inline: auto;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .stories-kicker {
+    color: var(--green);
+    margin-bottom: 0.5rem;
+  }
+
+  .stories-header h2 {
+    font-size: clamp(1.8rem, 1.2rem + 2.5vw, 2.8rem);
+    margin-bottom: 1rem;
+    line-height: 1.15;
+  }
+
+  .stories-lead {
+    color: var(--muted-on-light);
+    font-size: clamp(1rem, 0.95rem + 0.3vw, 1.15rem);
+  }
+
+  .stories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+    gap: clamp(1.5rem, 3vw, 2rem);
+  }
+
+  .story-card {
+    background: #ffffff;
+    border: 1px solid var(--line-light);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.6rem, 3vw, 2.2rem);
+    box-shadow: 0 4px 20px -4px rgb(0 39 118 / 0.06);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
+  }
+
+  .story-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px -6px rgb(0 39 118 / 0.12);
+  }
+
+  .story-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.2rem;
+  }
+
+  .story-stars {
+    display: flex;
+    gap: 2px;
+    color: #f59e0b;
+  }
+
+  .star-icon {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  .story-tag {
+    font-size: 0.76rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.25rem 0.65rem;
+    background: rgb(0 156 59 / 0.08);
+    color: var(--green);
+    border-radius: var(--radius-sm);
+  }
+
+  .story-quote {
+    margin: 0 0 1.6rem 0;
+  }
+
+  .story-quote p {
+    font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem);
+    line-height: 1.6;
+    color: var(--ink);
+    font-style: italic;
+  }
+
+  .story-author {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--line-light);
+  }
+
+  .author-avatar {
+    width: 3.2rem;
+    height: 3.2rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), var(--blue-deep));
+    color: #ffffff;
+    display: grid;
+    place-items: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgb(0 39 118 / 0.25);
+  }
+
+  .author-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .author-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .check-icon {
+    width: 1.05rem;
+    height: 1.05rem;
+    color: var(--green);
+    display: inline-block;
+  }
+
+  .author-meta {
+    font-size: 0.82rem;
+    color: var(--muted-on-light);
+  }
+
+  .author-conquest {
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: var(--green);
+    margin-top: 0.15rem;
+  }
+</style>

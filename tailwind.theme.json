@@ -1,0 +1,90 @@
+{
+  "theme": {
+    "extend": {
+      "colors": {
+        "primary": "#0f172a",
+        "secondary": "#334155",
+        "tertiary": "#9a3412",
+        "neutral": "#f8fafc",
+        "surface": "#ffffff",
+        "accent": "#c2410c",
+        "success": "#065f46",
+        "warning": "#92400e"
+      },
+      "fontFamily": {
+        "h1": [
+          "Outfit"
+        ],
+        "h2": [
+          "Outfit"
+        ],
+        "h3": [
+          "Outfit"
+        ],
+        "body-lg": [
+          "Outfit"
+        ],
+        "body-md": [
+          "Outfit"
+        ],
+        "body-sm": [
+          "Outfit"
+        ]
+      },
+      "fontSize": {
+        "h1": [
+          "3.5rem",
+          {
+            "letterSpacing": "-0.02em",
+            "fontWeight": "700"
+          }
+        ],
+        "h2": [
+          "2.25rem",
+          {
+            "letterSpacing": "-0.01em",
+            "fontWeight": "700"
+          }
+        ],
+        "h3": [
+          "1.5rem",
+          {
+            "fontWeight": "600"
+          }
+        ],
+        "body-lg": [
+          "1.125rem",
+          {
+            "fontWeight": "400"
+          }
+        ],
+        "body-md": [
+          "1rem",
+          {
+            "fontWeight": "400"
+          }
+        ],
+        "body-sm": [
+          "0.875rem",
+          {
+            "fontWeight": "400"
+          }
+        ]
+      },
+      "borderRadius": {
+        "sm": "8px",
+        "md": "16px",
+        "lg": "24px",
+        "full": "9999px"
+      },
+      "spacing": {
+        "xs": "4px",
+        "sm": "8px",
+        "md": "16px",
+        "lg": "24px",
+        "xl": "32px",
+        "xxl": "48px"
+      }
+    }
+  }
+}

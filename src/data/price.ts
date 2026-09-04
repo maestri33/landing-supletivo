@@ -36,7 +36,7 @@ export interface Price {
   pixTotal: number;
 }
 
-const FALLBACK: Price = {
+export const FALLBACK: Price = {
   full: ANCHOR_FULL,
   installments: 12,
   perMonth: 99,
@@ -44,9 +44,15 @@ const FALLBACK: Price = {
   pixTotal: 999,
 };
 
-async function loadPrice(): Promise<Price> {
+const TIMEOUT_MS = Number(process.env.PRICING_TIMEOUT_MS) || 1200;
+
+export async function fetchPrice(
+  fetcher: typeof fetch = fetch,
+  endpoint: string = ENDPOINT,
+  timeoutMs: number = TIMEOUT_MS
+): Promise<Price> {
   try {
-    const res = await fetch(ENDPOINT, { signal: AbortSignal.timeout(6000) });
+    const res = await fetcher(endpoint, { signal: AbortSignal.timeout(timeoutMs) });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
 
@@ -75,6 +81,18 @@ async function loadPrice(): Promise<Price> {
     console.warn(`[price] falha ao buscar pricing — usando fallback: ${String(err)}`);
     return FALLBACK;
   }
+}
+
+async function loadPrice(): Promise<Price> {
+  if (
+    process.env.SKIP_PRICING_FETCH === '1' ||
+    process.env.SKIP_PRICING_FETCH === 'true' ||
+    process.env.VITEST ||
+    process.env.NODE_ENV === 'test'
+  ) {
+    return FALLBACK;
+  }
+  return fetchPrice();
 }
 
 export const PRICE: Price = await loadPrice();

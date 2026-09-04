@@ -11,13 +11,19 @@ function resolveChromium(): string | undefined {
   if (process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH) {
     return process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH;
   }
-  const home = process.env.HOME || '/root';
-  const root = process.env.PLAYWRIGHT_BROWSERS_PATH || join(home, '.cache', 'ms-playwright');
+  const root =
+    process.env.PLAYWRIGHT_BROWSERS_PATH ||
+    (process.platform === 'win32'
+      ? join(process.env.LOCALAPPDATA || '', 'ms-playwright')
+      : join(process.env.HOME || '/root', '.cache', 'ms-playwright'));
   const candidates: string[] = [];
   if (existsSync(root)) {
     for (const name of readdirSync(root)) {
       if (/^chromium-\d+$/.test(name)) {
-        const p = join(root, name, 'chrome-linux64', 'chrome');
+        const p =
+          process.platform === 'win32'
+            ? join(root, name, 'chrome-win64', 'chrome.exe')
+            : join(root, name, 'chrome-linux64', 'chrome');
         if (existsSync(p)) candidates.push(p);
       }
     }

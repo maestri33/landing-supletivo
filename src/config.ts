@@ -20,3 +20,8 @@ export const CTA_LABEL = 'Quero meu diploma';
 export const COMPANY_URL = 'https://v7m.org';
 /** Página de vagas / trabalhe conosco */
 export const CAREERS_URL = 'https://job.v7m.org';
+
+/** Telefone de atendimento oficial WhatsApp (apenas dígitos) */
+export const WHATSAPP_NUMBER =
+  import.meta.env.PUBLIC_WHATSAPP_NUMBER ?? '5511999999999';
+

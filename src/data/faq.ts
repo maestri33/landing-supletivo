@@ -20,6 +20,10 @@ export const faq: FaqItem[] = [
     a: `Você pode pagar em ${cardLine} no cartão de crédito ou ${pixBRL} à vista no Pix. A escolha é feita na matrícula, dentro do app. O valor é promocional e pode mudar sem aviso.`,
   },
   {
+    q: 'Como funciona a garantia de 7 dias?',
+    a: 'Você tem 7 dias de garantia incondicional após a matrícula. Se dentro desse período você decidir não continuar por qualquer motivo, devolvemos 100% do valor pago, sem burocracia ou questionamentos, em total conformidade com o art. 49 do Código de Defesa do Consumidor (CDC).',
+  },
+  {
     q: 'O certificado serve para faculdade, concurso e CNH?',
     a: 'Sim. O certificado de conclusão serve para se matricular em faculdades, prestar concursos públicos, tirar a CNH e comprovar escolaridade no trabalho.',
   },
