@@ -8,12 +8,17 @@ import Steps from '../components/Steps.astro';
 import Eligibility from '../components/Eligibility.astro';
 import Trust from '../components/Trust.astro';
 import Validity from '../components/Validity.astro';
+import Stories from '../components/Stories.astro';
 import Pricing from '../components/Pricing.astro';
 import Virada from '../components/Virada.astro';
 import Faq from '../components/Faq.astro';
 import FinalCta from '../components/FinalCta.astro';
 import StickyCta from '../components/StickyCta.astro';
 import Footer from '../components/Footer.astro';
+import CurriculumSyllabus from '../components/CurriculumSyllabus.astro';
+import OfficialValidation from '../components/OfficialValidation.astro';
+import SalaryCalculator from '../components/SalaryCalculator.astro';
+import WhatsAppFloating from '../components/WhatsAppFloating.astro';
 import { faq } from '../data/faq';
 import { BRAND } from '../config';
 import { PRICE, cardLine, pixBRL } from '../data/price';
@@ -43,6 +48,58 @@ const schema = {
       description:
         'Educação de Jovens e Adultos (EJA) com estudo 100% online e prova final presencial, para concluir o Ensino Fundamental ou o Ensino Médio, com certificação emitida por instituição parceira credenciada ao MEC e validade em todo o território nacional.',
       url: siteUrl,
+      inLanguage: 'pt-BR',
+      educationalLevel: ['Ensino Fundamental', 'Ensino Médio'],
+      educationalCredentialAwarded: [
+        {
+          '@type': 'EducationalOccupationalCredential',
+          name: 'Certificado de Conclusão do Ensino Fundamental (EJA)',
+          credentialCategory: 'degree',
+          recognizedBy: {
+            '@type': 'Organization',
+            name: 'Ministério da Educação (MEC)',
+          },
+        },
+        {
+          '@type': 'EducationalOccupationalCredential',
+          name: 'Certificado de Conclusão do Ensino Médio (EJA)',
+          credentialCategory: 'degree',
+          recognizedBy: {
+            '@type': 'Organization',
+            name: 'Ministério da Educação (MEC)',
+          },
+        },
+      ],
+      hasCourseInstance: [
+        {
+          '@type': 'CourseInstance',
+          courseMode: ['online', 'blended'],
+          courseWorkload: 'PT120H',
+          inLanguage: 'pt-BR',
+          offers: {
+            '@type': 'Offer',
+            price: String(PRICE.pixTotal),
+            priceCurrency: 'BRL',
+            availability: 'https://schema.org/InStock',
+            url: siteUrl,
+            category: 'À vista no Pix',
+          },
+        },
+        {
+          '@type': 'CourseInstance',
+          courseMode: ['online', 'blended'],
+          courseWorkload: 'PT120H',
+          inLanguage: 'pt-BR',
+          offers: {
+            '@type': 'Offer',
+            price: String(PRICE.cardTotal),
+            priceCurrency: 'BRL',
+            availability: 'https://schema.org/InStock',
+            url: siteUrl,
+            category: `${PRICE.installments}x no cartão`,
+          },
+        },
+      ],
       provider: { '@id': `${siteUrl}#org` },
       offers: {
         '@type': 'AggregateOffer',
@@ -73,9 +130,13 @@ const schema = {
     <Hero />
     <Mirror />
     <Steps />
+    <CurriculumSyllabus />
     <Eligibility />
     <Trust />
     <Validity />
+    <OfficialValidation />
+    <Stories />
+    <SalaryCalculator />
     <Pricing />
     <Virada />
     <Faq />
@@ -83,4 +144,5 @@ const schema = {
   </main>
   <Footer />
   <StickyCta />
+  <WhatsAppFloating />
 </Base>

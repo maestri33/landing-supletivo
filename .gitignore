@@ -13,3 +13,7 @@ playwright-report/
 
 # agent runtime (worktrees + skills + settings locais)
 .claude/worktrees/
+.claude/skills/
+.agents/
+agent/
+skills-lock.json

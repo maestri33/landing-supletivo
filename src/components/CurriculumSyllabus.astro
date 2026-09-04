@@ -1,0 +1,434 @@
+---
+/**
+ * Componente — Grade Curricular BNCC completa
+ * Apresenta a estrutura pedagógica por áreas do conhecimento com abas interativas,
+ * lista de módulos objetivos e estimativa de tempo por área.
+ */
+
+interface Area {
+  title: string;
+  tag: string;
+  description: string;
+  modules: string[];
+  timeEstimate: string;
+}
+
+const areas: Area[] = [
+  {
+    title: 'Linguagens & Códigos',
+    tag: 'Português, Redação, Literatura, Artes e Inglês',
+    description:
+      'Aprenda a interpretar textos, elaborar redações de forma clara e dominar a comunicação exigida no mercado.',
+    modules: [
+      'Interpretação e Compreensão Textual',
+      'Gramática Aplicada e Redação Direta',
+      'Literatura Brasileira e Contemporânea',
+      'Inglês Instrumental para o Dia a Dia',
+    ],
+    timeEstimate: 'Aulas em vídeo de 15 min + apostilas digitais',
+  },
+  {
+    title: 'Matemática & Tecnologias',
+    tag: 'Matemática Básica, Álgebra, Geometria e Finanças',
+    description:
+      'Matemática prática e sem traumas, focada em raciocínio lógico, porcentagens e resolução de problemas cotidianos.',
+    modules: [
+      'Operações Fundamentais e Regra de Três',
+      'Matemática Financeira e Porcentagens',
+      'Equações e Análise de Gráficos',
+      'Geometria Prática e Medidas',
+    ],
+    timeEstimate: 'Exercícios práticos com correção comentada',
+  },
+  {
+    title: 'Ciências Humanas',
+    tag: 'História, Geografia, Filosofia e Sociologia',
+    description:
+      'Entenda a formação da sociedade brasileira, geopolítica, cidadania, direitos trabalhistas e ética.',
+    modules: [
+      'História do Brasil e do Mundo Ocidental',
+      'Geografia Física, Política e Urbana',
+      'Cidadania, Constituição e Direitos',
+      'Sociedade, Trabalho e Globalização',
+    ],
+    timeEstimate: 'Resumos ilustrados em PDF para download',
+  },
+  {
+    title: 'Ciências da Natureza',
+    tag: 'Biologia, Física e Química',
+    description:
+      'Conceitos fundamentais da natureza, ecologia, corpo humano, saúde e energia explicados de forma simples e direta.',
+    modules: [
+      'Biologia Humana, Saúde e Meio Ambiente',
+      'Química Cotidiana e Transformações',
+      'Fundamentos de Física e Eletricidade',
+      'Sustentabilidade e Recursos Naturais',
+    ],
+    timeEstimate: 'Simulados oficiais com pontuação instantânea',
+  },
+];
+---
+
+<section
+  id="grade-curricular"
+  class="curriculum section"
+  aria-labelledby="curriculum-title"
+  data-section="grade-curricular"
+>
+  <div class="container">
+    <div class="curriculum-header text-center" data-reveal>
+      <p class="kicker curriculum-kicker">Estrutura Pedagógica Completa</p>
+      <h2 id="curriculum-title">O que você vai estudar no seu ritmo</h2>
+      <p class="curriculum-lead">
+        Conteúdo 100% alinhado à Base Nacional Comum Curricular (BNCC), direto ao ponto, sem enrolação.
+      </p>
+    </div>
+
+    <!-- Navegação por Abas -->
+    <div
+      class="syllabus-tabs-wrap"
+      role="tablist"
+      aria-label="Áreas do conhecimento da BNCC"
+      data-reveal
+      style="--d: 1"
+    >
+      {areas.map((area, idx) => (
+        <button
+          type="button"
+          role="tab"
+          id={`syllabus-tab-${idx}`}
+          class={`syllabus-tab-btn ${idx === 0 ? 'active' : ''}`}
+          aria-selected={idx === 0 ? 'true' : 'false'}
+          aria-controls={`syllabus-panel-${idx}`}
+          data-tab-index={idx}
+          tabindex={idx === 0 ? 0 : -1}
+        >
+          {idx === 0 && (
+            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          )}
+          {idx === 1 && (
+            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="4" y="2" width="16" height="20" rx="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></rect>
+              <line x1="8" y1="6" x2="16" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line>
+              <line x1="16" y1="14" x2="16" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line>
+              <path d="M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M8 18h.01M12 18h.01" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></path>
+            </svg>
+          )}
+          {idx === 2 && (
+            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
+              <line x1="2" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="2"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke="currentColor" stroke-width="2"></path>
+            </svg>
+          )}
+          {idx === 3 && (
+            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="2" stroke="currentColor" stroke-width="2"></circle>
+              <path d="M12 21a9 9 0 0 0 9-9 9 9 0 0 0-9-9 9 9 0 0 0-9 9 9 9 0 0 0 9 9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M4.93 4.93 19.07 19.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          )}
+          <span>{area.title}</span>
+        </button>
+      ))}
+    </div>
+
+    <!-- Painéis de Conteúdo -->
+    <div class="syllabus-content" data-reveal style="--d: 2">
+      {areas.map((area, idx) => (
+        <article
+          role="tabpanel"
+          id={`syllabus-panel-${idx}`}
+          aria-labelledby={`syllabus-tab-${idx}`}
+          class={`syllabus-panel ${idx === 0 ? 'active' : ''}`}
+          hidden={idx !== 0}
+        >
+          <div class="panel-header">
+            <div>
+              <span class="panel-tag">{area.tag}</span>
+              <h3 class="panel-title">{area.title}</h3>
+            </div>
+            <div class="panel-time">
+              <svg class="clock-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
+                <polyline points="12 6 12 12 16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline>
+              </svg>
+              <span>{area.timeEstimate}</span>
+            </div>
+          </div>
+
+          <p class="panel-desc">{area.description}</p>
+
+          <div class="panel-modules-grid">
+            {area.modules.map((mod) => (
+              <div class="module-card">
+                <svg class="module-check" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                  <polyline points="22 4 12 14.01 9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                </svg>
+                <span class="module-name">{mod}</span>
+              </div>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  function initCurriculumTabs() {
+    const tabsWrap = document.querySelector<HTMLElement>('.syllabus-tabs-wrap');
+    if (!tabsWrap) return;
+
+    const tabButtons = tabsWrap.querySelectorAll<HTMLButtonElement>('[role="tab"]');
+    const panels = document.querySelectorAll<HTMLElement>('[role="tabpanel"]');
+
+    function selectTab(index: number) {
+      tabButtons.forEach((btn, i) => {
+        const isSelected = i === index;
+        btn.classList.toggle('active', isSelected);
+        btn.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+        btn.setAttribute('tabindex', isSelected ? '0' : '-1');
+      });
+
+      panels.forEach((panel, i) => {
+        const isSelected = i === index;
+        panel.classList.toggle('active', isSelected);
+        panel.hidden = !isSelected;
+      });
+    }
+
+    tabButtons.forEach((btn, idx) => {
+      btn.addEventListener('click', () => {
+        selectTab(idx);
+      });
+
+      btn.addEventListener('keydown', (e: KeyboardEvent) => {
+        let targetIdx = -1;
+        if (e.key === 'ArrowRight') {
+          targetIdx = (idx + 1) % tabButtons.length;
+        } else if (e.key === 'ArrowLeft') {
+          targetIdx = (idx - 1 + tabButtons.length) % tabButtons.length;
+        } else if (e.key === 'Home') {
+          targetIdx = 0;
+        } else if (e.key === 'End') {
+          targetIdx = tabButtons.length - 1;
+        }
+
+        if (targetIdx !== -1) {
+          e.preventDefault();
+          tabButtons[targetIdx].focus();
+          selectTab(targetIdx);
+        }
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCurriculumTabs);
+  } else {
+    initCurriculumTabs();
+  }
+</script>
+
+<style>
+  .curriculum {
+    background: var(--paper-soft);
+    border-top: 1px solid var(--line-light);
+    overflow: clip;
+  }
+
+  .curriculum-header {
+    max-width: 46rem;
+    margin-inline: auto;
+    margin-bottom: 2.5rem;
+    text-align: center;
+  }
+
+  .curriculum-kicker {
+    color: var(--green);
+    margin-bottom: 0.8rem;
+  }
+
+  #curriculum-title {
+    font-size: var(--text-h2-sm);
+    color: var(--ink);
+  }
+
+  .curriculum-lead {
+    color: var(--muted-on-light);
+    font-size: var(--text-base);
+    margin-top: 0.8rem;
+  }
+
+  .syllabus-tabs-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .syllabus-tab-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.8rem 1.35rem;
+    border-radius: var(--radius-md);
+    background: var(--paper);
+    border: 1px solid var(--line-light);
+    color: var(--muted-on-light);
+    font-family: var(--font-body);
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s var(--ease-out);
+    box-shadow: 0 4px 14px -6px rgb(11 18 32 / 0.08);
+  }
+
+  .syllabus-tab-btn:hover {
+    color: var(--ink);
+    border-color: var(--green);
+    background: #ffffff;
+    transform: translateY(-2px);
+  }
+
+  .syllabus-tab-btn.active {
+    background: var(--ink);
+    color: var(--yellow);
+    border-color: var(--ink);
+    box-shadow: 0 10px 24px -8px rgb(11 18 32 / 0.35);
+    transform: scale(1.03);
+  }
+
+  .tab-icon {
+    width: 1.15rem;
+    height: 1.15rem;
+    flex: none;
+  }
+
+  .syllabus-content {
+    max-width: 58rem;
+    margin-inline: auto;
+  }
+
+  .syllabus-panel {
+    background: var(--paper);
+    border: 1px solid var(--line-light);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.5rem, 4vw, 2.6rem);
+    box-shadow: 0 16px 36px -16px rgb(11 18 32 / 0.1);
+    transition: opacity 0.3s var(--ease-out);
+  }
+
+  .syllabus-panel[hidden] {
+    display: none;
+  }
+
+  .panel-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    padding-bottom: 1.4rem;
+    border-bottom: 1px solid var(--line-light);
+    margin-bottom: 1.5rem;
+  }
+
+  @media (min-width: 720px) {
+    .panel-header {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  .panel-tag {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .panel-title {
+    font-size: var(--text-h3);
+    color: var(--ink);
+    margin-top: 0.3rem;
+  }
+
+  .panel-time {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--paper-soft);
+    border: 1px solid var(--line-light);
+    border-radius: 999px;
+    padding: 0.45rem 0.95rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--muted-on-light);
+    width: fit-content;
+  }
+
+  .clock-icon {
+    width: 1rem;
+    height: 1rem;
+    color: var(--green);
+    flex: none;
+  }
+
+  .panel-desc {
+    color: var(--muted-on-light);
+    font-size: 1.02rem;
+    line-height: 1.6;
+    margin-bottom: 1.8rem;
+    max-width: 48ch;
+  }
+
+  .panel-modules-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+  }
+
+  @media (min-width: 640px) {
+    .panel-modules-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .module-card {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: var(--paper-soft);
+    border: 1px solid var(--line-light);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.2rem;
+    transition: all 0.2s var(--ease-out);
+  }
+
+  .module-card:hover {
+    border-color: var(--green);
+    background: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px -6px rgb(0 115 77 / 0.15);
+  }
+
+  .module-check {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--green);
+    flex: none;
+  }
+
+  .module-name {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+</style>

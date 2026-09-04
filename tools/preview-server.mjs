@@ -51,10 +51,11 @@ const port = await pickPort();
 const portFile = resolve(process.cwd(), '.preview-port');
 writeFileSync(portFile, String(port) + '\n');
 
+const npxCmd = process.platform === 'win32' ? 'npx.cmd' : 'npx';
 const child = spawn(
-  'npx',
+  npxCmd,
   ['astro', 'preview', '--port', String(port), '--host', HOST],
-  { stdio: 'inherit' }
+  { stdio: 'inherit', shell: process.platform === 'win32' }
 );
 
 const cleanup = () => {
