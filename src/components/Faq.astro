@@ -16,7 +16,7 @@ import { faq } from '../data/faq';
     <div class="faq-list">
       {
         faq.map((item, i) => (
-          <details class="faq-item" data-faq data-reveal style={`--d: ${Math.min(i, 4)}`}>
+          <details class="faq-item" data-faq>
             <summary>
               <h3>{item.q}</h3>
               <svg
